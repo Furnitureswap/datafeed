@@ -2,8 +2,9 @@ name: Generate Zoho Commerce Feed
 
 on:
   schedule:
+    # Runs daily at 06:00 UTC. Edit the cron expression to change frequency.
     - cron: '0 6 * * *'
-  workflow_dispatch: {}
+  workflow_dispatch: {}  # lets you also trigger a run manually from the Actions tab
 
 permissions:
   contents: write
@@ -25,12 +26,13 @@ jobs:
 
       - name: Generate feed
         env:
+          PYTHONUNBUFFERED: "1"
           ZOHO_DC: ${{ secrets.ZOHO_DC }}
           ZOHO_CLIENT_ID: ${{ secrets.ZOHO_CLIENT_ID }}
           ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
           ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
           ZOHO_ORG_ID: ${{ secrets.ZOHO_ORG_ID }}
-        run: python scripts/generate_feed.py
+        run: python -u scripts/generate_feed.py
 
       - name: Commit updated feed if it changed
         run: |
