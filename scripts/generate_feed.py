@@ -268,7 +268,31 @@ def is_root(category):
     return pid in (None, "", "0", 0, "-1", -1)
 
 
+def _is_category_online(category):
+    """Same 'Show in Online Store: Online/Offline' flag you saw in the admin
+    Categories list. Field name is a best guess (Zoho's docs call it
+    `visibility`) -- checked defensively alongside other plausible names."""
+    for key in ("visibility", "show_in_storefront", "show_in_store", "is_online"):
+        if key in category:
+            val = category.get(key)
+            return val in (True, "true", "True", 1, "1", "Online", "online", "visible", "Visible", "shown", "Shown")
+    return None
+
+
 def build_categories_json(categories, enrichment):
+    online_flags = [_is_category_online(c) for c in categories]
+    if all(v is None for v in online_flags):
+        print(
+            "WARNING: could not find an online/offline visibility field on "
+            "categories from the API -- including ALL categories (even ones "
+            "marked Offline in your admin). Open one raw category from the "
+            "API response and tell Claude its exact field names so this "
+            "filter can be fixed."
+        )
+        online_by_id = {c["category_id"]: True for c in categories}
+    else:
+        online_by_id = {c["category_id"]: (flag is not False) for c, flag in zip(categories, online_flags)}
+
     by_id = {c["category_id"]: c for c in categories}
 
     def top_ancestor(cat):
@@ -292,8 +316,12 @@ def build_categories_json(categories, enrichment):
                 "categories": [],
             })
 
+    skipped_offline = 0
     for c in categories:
         if is_root(c):
+            continue
+        if not online_by_id.get(c["category_id"], True):
+            skipped_offline += 1
             continue
         root = top_ancestor(c)
         key = str(root["category_id"])
@@ -310,6 +338,9 @@ def build_categories_json(categories, enrichment):
             "image": info.get("image", ""),
             "parent_id": str(c.get("parent_category_id", "")),
         })
+
+    if skipped_offline:
+        print(f"Skipped {skipped_offline} offline categories")
 
     return {"groups": [g for g in groups.values() if g["categories"]]}
 
