@@ -61,7 +61,7 @@ DOCS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 CATEGORIES_OUT = os.path.join(DOCS_DIR, "categories.json")
 PRODUCTS_OUT = os.path.join(DOCS_DIR, "products.json")
 
-ENRICH_WORKERS = 5  # concurrent storefront requests -- keep modest, this hits your live store
+ENRICH_WORKERS = 10  # concurrent storefront requests -- keep modest, this hits your live store
 # --------------------------------------------------------
 
 
@@ -131,7 +131,44 @@ def fetch_all_products(access_token):
             break
         page += 1
         time.sleep(0.2)
-    return items
+
+    return _filter_online_only(items)
+
+
+def _is_online(product):
+    """
+    'Status.Active' (filtered above) is Zoho's inventory status, not the same
+    as the storefront "Show in Store: Online" flag you saw in the product
+    list -- a product can be Active but still Draft/hidden from customers.
+    Zoho's docs name this field `show_in_storefront`; check a couple of
+    plausible spellings/value formats defensively so a naming mismatch
+    doesn't silently keep this filter from working.
+    """
+    for key in ("show_in_storefront", "show_in_store", "is_online", "storefront_visibility"):
+        if key in product:
+            val = product.get(key)
+            return val in (True, "true", "True", 1, "1", "Online", "online")
+    return None  # field not found at all
+
+
+def _filter_online_only(products):
+    flagged = [_is_online(p) for p in products]
+    if all(v is None for v in flagged):
+        # None of the expected fields showed up in the response at all --
+        # rather than silently returning zero products (or silently
+        # including hidden ones), fall back to including everything and
+        # print a loud warning so this doesn't go unnoticed.
+        print(
+            "WARNING: could not find an online/storefront-visibility field on "
+            "products from the API -- shipping ALL Status.Active products "
+            "(including any not shown in your store). Open one raw product "
+            "from the API response and tell Claude its exact field names so "
+            "this filter can be fixed."
+        )
+        return products
+    online = [p for p, flag in zip(products, flagged) if flag]
+    print(f"Filtered {len(products)} active products down to {len(online)} shown in store")
+    return online
 
 
 def fetch_product_custom_fields(access_token, product_id):
@@ -208,13 +245,19 @@ def enrich_category(category_id):
         return category_id, {"image": "", "url": ""}
 
 
-def enrich_all(ids, fn):
+def enrich_all(ids, fn, label="items"):
+    ids = list(ids)
+    total = len(ids)
     results = {}
+    done = 0
     with ThreadPoolExecutor(max_workers=ENRICH_WORKERS) as pool:
         futures = [pool.submit(fn, i) for i in ids]
         for f in as_completed(futures):
             item_id, data = f.result()
             results[item_id] = data
+            done += 1
+            if done % 50 == 0 or done == total:
+                print(f"  enriched {done}/{total} {label}")
     return results
 
 
@@ -314,8 +357,9 @@ def main():
     categories = fetch_all_categories(access_token)
     products = fetch_all_products(access_token)
 
-    category_enrichment = enrich_all([c["category_id"] for c in categories], enrich_category)
-    product_enrichment = enrich_all([p["product_id"] for p in products], enrich_product)
+    print(f"Fetched {len(categories)} categories, {len(products)} online products. Enriching...")
+    category_enrichment = enrich_all([c["category_id"] for c in categories], enrich_category, label="categories")
+    product_enrichment = enrich_all([p["product_id"] for p in products], enrich_product, label="products")
 
     if INCLUDE_DIMENSIONS:
         for p in products:
