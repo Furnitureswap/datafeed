@@ -273,6 +273,16 @@ def storefront_headers():
 _failure_count = 0
 _failure_examples_printed = 0
 
+# Populated in main() right after fetch_all_products() -- product_id -> the
+# full raw ADMIN API record for that product (no extra API call, we already
+# have this in memory). Used below to dump the admin-side record for a
+# product whose STOREFRONT enrichment call 404s, so we can see what's
+# actually different about it (e.g. a variant/grouping field) without
+# needing another live API call to diagnose it.
+_PRODUCTS_BY_ID = {}
+_404_admin_dumps_printed = 0
+_MAX_404_ADMIN_DUMPS = 3
+
 
 def _log_failure(kind, item_id, reason):
     global _failure_count, _failure_examples_printed
@@ -280,6 +290,30 @@ def _log_failure(kind, item_id, reason):
     if _failure_examples_printed < 5:
         print(f"  [storefront {kind} FAILED] id={item_id} domain-name={STOREFRONT_DOMAIN!r} -> {reason}")
         _failure_examples_printed += 1
+    if kind == "product" and "404" in str(reason):
+        _dump_admin_record_on_404(item_id)
+
+
+def _dump_admin_record_on_404(product_id):
+    """
+    A 404 from the STOREFRONT API for a product id that DID come back from
+    the ADMIN bulk product list is unexpected -- print that product's full
+    admin-side record (already in memory, no extra call) for the first few,
+    so whatever distinguishes it (a variant/grouping field, a different id
+    scheme, etc.) is visible instead of guessed at.
+    """
+    global _404_admin_dumps_printed
+    if _404_admin_dumps_printed >= _MAX_404_ADMIN_DUMPS:
+        return
+    record = _PRODUCTS_BY_ID.get(product_id)
+    if not record:
+        return
+    _404_admin_dumps_printed += 1
+    pretty = json.dumps(record, indent=2)
+    print(f"  ADMIN record for 404'd product id={product_id} ({len(pretty)} chars):")
+    print(pretty[:6000])
+    if len(pretty) > 6000:
+        print(f"  ...(truncated, {len(pretty) - 6000} more chars)")
 
 
 def verify_storefront_access(sample_category_id=None, sample_product_id=None):
@@ -780,6 +814,9 @@ def main():
     categories = fetch_all_categories(access_token)
     products = fetch_all_products(access_token)
     print(f"Fetched {len(categories)} categories, {len(products)} online products.")
+
+    global _PRODUCTS_BY_ID
+    _PRODUCTS_BY_ID = {p["product_id"]: p for p in products}
 
     # Fail fast and loudly if STOREFRONT_DOMAIN is wrong, instead of silently
     # timing out on every single one of 1000+ items (which is what happened
