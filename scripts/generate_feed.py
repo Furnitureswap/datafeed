@@ -31,7 +31,7 @@ import time
 import json
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 # ----------------------- CONFIG -----------------------
 DATA_CENTER = os.environ.get("ZOHO_DC", "eu")  # com | eu | in | com.au | jp
@@ -361,6 +361,20 @@ def _resolve_url_and_image(data, fallback_domain):
     if not image_url:
         raw = data.get("image_url") or ""
         image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
+    if not image_url:
+        # CONFIRMED against a real working image URL from the live site:
+        # https://cdn3.zohoecommerce.com/product-images/{filename}/{document_id}/{size}?storefront_domain={domain}
+        # -- filename is documents[].name, document_id is documents[].document_id.
+        documents = data.get("documents") or []
+        if documents:
+            featured = next((d for d in documents if d.get("is_featured")), documents[0])
+            doc_id = featured.get("document_id") or ""
+            doc_name = featured.get("name") or ""
+            if doc_id and doc_name:
+                image_url = (
+                    f"https://cdn3.zohoecommerce.com/product-images/"
+                    f"{quote(doc_name)}/{doc_id}/600x600?storefront_domain={fallback_domain}"
+                )
 
     return full_url, image_url
 
@@ -370,9 +384,11 @@ def _extract_payload(raw, wrapper_key, sample_flag_name, id_for_log):
     Print the TRUE raw response the first time (unmodified -- earlier
     versions of this dump printed the result of a wrong key guess instead
     of the real payload, which is why it showed up empty), then try several
-    plausible wrapper keys before falling back to treating the top-level
-    object itself as the data (some Zoho storefront responses aren't
-    wrapped in a "product"/"category" key at all).
+    plausible wrapper shapes -- confirmed from real responses: both
+    products and categories wrap everything one level deeper under
+    "payload" (e.g. payload.product.*, and likely payload.category.*)
+    before falling back to treating the top-level object itself as the
+    data.
     """
     global _dumped_product_sample, _dumped_category_sample
     already_dumped = _dumped_product_sample if sample_flag_name == "product" else _dumped_category_sample
@@ -381,7 +397,23 @@ def _extract_payload(raw, wrapper_key, sample_flag_name, id_for_log):
             globals()["_dumped_product_sample"] = True
         else:
             globals()["_dumped_category_sample"] = True
-        print(f"  SAMPLE raw {sample_flag_name} response (id={id_for_log}): {json.dumps(raw)[:3000]}")
+        # Pretty-printed (one field per line) and generous limit so nothing
+        # gets cut off before we can see fields like the page url/handle --
+        # earlier dumps were truncated at 3000 chars, hiding whatever came
+        # after "documents".
+        pretty = json.dumps(raw, indent=2)
+        print(f"  SAMPLE raw {sample_flag_name} response (id={id_for_log}), full length={len(pretty)} chars:")
+        print(pretty[:12000])
+        if len(pretty) > 12000:
+            print(f"  ...(truncated, {len(pretty) - 12000} more chars)")
+
+    # Confirmed real shape: raw -> payload -> product/category
+    payload = raw.get("payload")
+    if isinstance(payload, dict):
+        if isinstance(payload.get(wrapper_key), dict) and payload.get(wrapper_key):
+            return payload[wrapper_key]
+        if payload:  # payload itself might be the item's data (categories may not nest further)
+            return payload
 
     for key in (wrapper_key, "data", "result"):
         if isinstance(raw.get(key), dict) and raw.get(key):
