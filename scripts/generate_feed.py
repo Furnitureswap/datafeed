@@ -93,7 +93,7 @@ def admin_headers(access_token):
 
 
 def fetch_all_categories(access_token):
-    items, page = [], 1
+    items, seen_ids, page = [], set(), 1
     max_pages = 100  # safety cap so a pagination quirk can't loop forever
     while page <= max_pages:
         resp = requests.get(
@@ -105,9 +105,29 @@ def fetch_all_categories(access_token):
         resp.raise_for_status()
         payload = resp.json()
         batch = payload.get("categories", [])
-        items.extend(batch)
-        print(f"  fetched category page {page} ({len(batch)} items, {len(items)} total so far)")
-        if not payload.get("page_context", {}).get("has_more_page") or not batch:
+        page_context = payload.get("page_context", {})
+
+        batch_ids = [c.get("category_id") for c in batch]
+        new_ids = [cid for cid in batch_ids if cid not in seen_ids]
+        duplicate_ratio = 1 - (len(new_ids) / len(batch_ids)) if batch_ids else 0
+
+        print(
+            f"  category page {page}: got {len(batch)} items ({len(new_ids)} new), "
+            f"raw page_context={page_context}"
+        )
+
+        if not batch:
+            break
+        if duplicate_ratio > 0.5:
+            print(f"STOPPING: category page {page} was {duplicate_ratio:.0%} duplicates -- pagination looping")
+            break
+
+        for c, cid in zip(batch, batch_ids):
+            if cid not in seen_ids:
+                seen_ids.add(cid)
+                items.append(c)
+
+        if not page_context.get("has_more_page"):
             break
         page += 1
         time.sleep(0.2)
@@ -118,17 +138,21 @@ def fetch_all_categories(access_token):
 
 def fetch_all_products(access_token):
     """
-    IMPORTANT: `page_start_from` is a RECORD OFFSET ("start listing from
-    record number X"), not a page number -- it must jump by `per_page` each
-    call (1, 201, 401, ...). Incrementing it by 1 each time (an earlier bug
-    here) causes near-duplicate overlapping requests and can loop for
-    hundreds of "pages" instead of ~6, eventually failing only when the
-    1-hour OAuth access token expires (HTTP 401) rather than finishing.
+    Zoho's exact pagination semantics for `page_start_from` turned out not to
+    match either guess tried so far (plain page number, or record offset
+    stepped by per_page) -- both produced runaway/duplicate results against
+    the real API. Rather than guess a third time, this version trusts
+    nothing: it prints the raw page_context Zoho actually returns (so the
+    real shape is visible in the log), and -- most importantly -- stops the
+    moment a page comes back mostly full of product_ids already seen, since
+    that's unambiguous proof of looping over the same data, regardless of
+    what has_more_page claims.
     """
     per_page = 200
-    items, offset, page_num = [], 1, 1
-    max_pages = 100  # safety cap: 100 x 200 = 20,000 products, far more than any real catalog here
-    while page_num <= max_pages:
+    items, seen_ids, offset, page_num = [], set(), 1, 1
+    max_pages = 100
+    hard_item_cap = 5000  # well above any plausible real catalog size here
+    while page_num <= max_pages and len(items) < hard_item_cap:
         resp = requests.get(
             f"{ADMIN_API_BASE}/products",
             headers=admin_headers(access_token),
@@ -142,15 +166,40 @@ def fetch_all_products(access_token):
         resp.raise_for_status()
         payload = resp.json()
         batch = payload.get("products", [])
-        items.extend(batch)
-        print(f"  fetched product page {page_num} ({len(batch)} items, {len(items)} total so far)")
-        if not payload.get("page_context", {}).get("has_more_page") or not batch:
+        page_context = payload.get("page_context", {})
+
+        batch_ids = [p.get("product_id") for p in batch]
+        new_ids = [pid for pid in batch_ids if pid not in seen_ids]
+        duplicate_ratio = 1 - (len(new_ids) / len(batch_ids)) if batch_ids else 0
+
+        print(
+            f"  product page {page_num}: requested page_start_from={offset}, got {len(batch)} items "
+            f"({len(new_ids)} new, {len(batch) - len(new_ids)} duplicate), raw page_context={page_context}"
+        )
+
+        if not batch:
+            break
+
+        if duplicate_ratio > 0.5:
+            print(
+                f"STOPPING: page {page_num} was {duplicate_ratio:.0%} duplicates of already-fetched products -- "
+                f"this confirms page_start_from={offset} is not advancing correctly. Send Claude this log "
+                f"(the 'raw page_context' lines above) so the real pagination parameter can be figured out."
+            )
+            break
+
+        for p, pid in zip(batch, batch_ids):
+            if pid not in seen_ids:
+                seen_ids.add(pid)
+                items.append(p)
+
+        if not page_context.get("has_more_page"):
             break
         offset += per_page
         page_num += 1
         time.sleep(0.2)
     else:
-        print(f"WARNING: stopped after the {max_pages}-page safety cap -- catalog may be larger than expected")
+        print(f"WARNING: stopped after hitting a safety cap (page {page_num}, {len(items)} items)")
 
     return _filter_online_only(items)
 
