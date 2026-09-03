@@ -28,6 +28,7 @@ in the workflow -- see the top-level README.md for setup).
 
 import os
 import time
+import json
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
@@ -61,7 +62,7 @@ DOCS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 CATEGORIES_OUT = os.path.join(DOCS_DIR, "categories.json")
 PRODUCTS_OUT = os.path.join(DOCS_DIR, "products.json")
 
-ENRICH_WORKERS = 10  # concurrent storefront requests -- keep modest, this hits your live store
+ENRICH_WORKERS = 6  # concurrent storefront requests -- keep modest, this hits your live store
 # --------------------------------------------------------
 
 
@@ -138,27 +139,29 @@ def fetch_all_categories(access_token):
 
 def fetch_all_products(access_token):
     """
-    Zoho's exact pagination semantics for `page_start_from` turned out not to
-    match either guess tried so far (plain page number, or record offset
-    stepped by per_page) -- both produced runaway/duplicate results against
-    the real API. Rather than guess a third time, this version trusts
-    nothing: it prints the raw page_context Zoho actually returns (so the
-    real shape is visible in the log), and -- most importantly -- stops the
-    moment a page comes back mostly full of product_ids already seen, since
-    that's unambiguous proof of looping over the same data, regardless of
-    what has_more_page claims.
+    Confirmed against the real API log: `page_start_from` is silently
+    ignored by this endpoint -- Zoho's own returned page_context kept
+    reporting {"page": 1, ...} no matter what value was sent, which is why
+    every "page" after the first came back 100% duplicate. The categories
+    endpoint's plain `page` parameter, by contrast, worked correctly on the
+    first try. So products now use the same `page` parameter.
+
+    Kept the duplicate-detection safety net as a standing guard (not just a
+    one-off diagnostic) -- if Zoho's pagination misbehaves again for any
+    reason, this stops immediately instead of silently collecting garbage
+    or looping for an hour.
     """
     per_page = 200
-    items, seen_ids, offset, page_num = [], set(), 1, 1
+    items, seen_ids, page = [], set(), 1
     max_pages = 100
     hard_item_cap = 5000  # well above any plausible real catalog size here
-    while page_num <= max_pages and len(items) < hard_item_cap:
+    while page <= max_pages and len(items) < hard_item_cap:
         resp = requests.get(
             f"{ADMIN_API_BASE}/products",
             headers=admin_headers(access_token),
             params={
                 "filter_by": "Status.Active",
-                "page_start_from": offset,
+                "page": page,
                 "per_page": per_page,
             },
             timeout=30,
@@ -173,8 +176,8 @@ def fetch_all_products(access_token):
         duplicate_ratio = 1 - (len(new_ids) / len(batch_ids)) if batch_ids else 0
 
         print(
-            f"  product page {page_num}: requested page_start_from={offset}, got {len(batch)} items "
-            f"({len(new_ids)} new, {len(batch) - len(new_ids)} duplicate), raw page_context={page_context}"
+            f"  product page {page}: got {len(batch)} items ({len(new_ids)} new), "
+            f"raw page_context={page_context}"
         )
 
         if not batch:
@@ -182,9 +185,8 @@ def fetch_all_products(access_token):
 
         if duplicate_ratio > 0.5:
             print(
-                f"STOPPING: page {page_num} was {duplicate_ratio:.0%} duplicates of already-fetched products -- "
-                f"this confirms page_start_from={offset} is not advancing correctly. Send Claude this log "
-                f"(the 'raw page_context' lines above) so the real pagination parameter can be figured out."
+                f"STOPPING: page {page} was {duplicate_ratio:.0%} duplicates of already-fetched products -- "
+                f"pagination is misbehaving again. Send Claude this log."
             )
             break
 
@@ -195,11 +197,10 @@ def fetch_all_products(access_token):
 
         if not page_context.get("has_more_page"):
             break
-        offset += per_page
-        page_num += 1
+        page += 1
         time.sleep(0.2)
     else:
-        print(f"WARNING: stopped after hitting a safety cap (page {page_num}, {len(items)} items)")
+        print(f"WARNING: stopped after hitting a safety cap (page {page}, {len(items)} items)")
 
     return _filter_online_only(items)
 
@@ -313,25 +314,70 @@ def verify_storefront_access(sample_category_id=None, sample_product_id=None):
     print(f"Storefront access check passed (domain-name={STOREFRONT_DOMAIN!r})")
 
 
+def _get_with_retry(url, attempts=2, timeout=15):
+    """One retry with a short pause -- several of the earlier failures were
+    plain timeouts against a live site under concurrent load, which a
+    single retry usually clears up without masking a real, persistent
+    problem (which would still fail on the retry too)."""
+    last_exc = None
+    for attempt in range(attempts):
+        try:
+            return requests.get(url, headers=storefront_headers(), timeout=timeout)
+        except requests.RequestException as e:
+            last_exc = e
+            if attempt < attempts - 1:
+                time.sleep(1)
+    raise last_exc
+
+
+_dumped_product_sample = False
+_dumped_category_sample = False
+
+
+def _resolve_url_and_image(data, fallback_domain):
+    """
+    Try every plausible field/shape for the page URL and image URL, since
+    `url` alone has been coming back blank for some real categories. Falls
+    back through: url -> handle (built as a root-relative path) -> seo.url,
+    and for images: images[0].url -> images[0].image_url -> image_url.
+    Whatever is still missing after this is a genuine gap in Zoho's data
+    for that item, not a guessing failure on our side.
+    """
+    page_url = data.get("url") or ""
+    if not page_url:
+        handle = data.get("handle") or ""
+        if handle:
+            page_url = f"/{handle}"
+    if not page_url:
+        page_url = (data.get("seo") or {}).get("url") or ""
+    full_url = page_url if page_url.startswith("http") else (f"https://{fallback_domain}{page_url}" if page_url else "")
+
+    images = data.get("images") or []
+    image_url = ""
+    if images:
+        img0 = images[0] if isinstance(images[0], dict) else {}
+        raw = img0.get("url") or img0.get("image_url") or ""
+        image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
+    if not image_url:
+        raw = data.get("image_url") or ""
+        image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
+
+    return full_url, image_url
+
+
 def enrich_product(product_id):
     """Fetch real image URL + page URL for one product from the public storefront API."""
+    global _dumped_product_sample
     try:
-        resp = requests.get(
-            f"{STOREFRONT_API_BASE}/products/{product_id}",
-            headers=storefront_headers(),
-            timeout=10,
-        )
+        resp = _get_with_retry(f"{STOREFRONT_API_BASE}/products/{product_id}")
         if not resp.ok:
             _log_failure("product", product_id, f"HTTP {resp.status_code}")
             return product_id, {"image": "", "url": ""}
         data = resp.json().get("product", {}) or {}
-        images = data.get("images", []) or []
-        image_url = ""
-        if images:
-            raw = images[0].get("url", "")
-            image_url = raw if raw.startswith("http") else f"https://{STOREFRONT_DOMAIN}{raw}"
-        page_url = data.get("url", "")
-        full_url = page_url if page_url.startswith("http") else f"https://{STOREFRONT_DOMAIN}{page_url}"
+        if not _dumped_product_sample:
+            _dumped_product_sample = True
+            print(f"  SAMPLE raw product JSON (id={product_id}): {json.dumps(data)[:2000]}")
+        full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
         return product_id, {"image": image_url, "url": full_url}
     except requests.RequestException as e:
         _log_failure("product", product_id, str(e))
@@ -340,23 +386,17 @@ def enrich_product(product_id):
 
 def enrich_category(category_id):
     """Fetch real image URL + page URL for one category from the public storefront API."""
+    global _dumped_category_sample
     try:
-        resp = requests.get(
-            f"{STOREFRONT_API_BASE}/categories/{category_id}",
-            headers=storefront_headers(),
-            timeout=10,
-        )
+        resp = _get_with_retry(f"{STOREFRONT_API_BASE}/categories/{category_id}")
         if not resp.ok:
             _log_failure("category", category_id, f"HTTP {resp.status_code}")
             return category_id, {"image": "", "url": ""}
         data = resp.json().get("category", {}) or {}
-        images = data.get("images", []) or []
-        image_url = ""
-        if images:
-            raw = images[0].get("url", "")
-            image_url = raw if raw.startswith("http") else f"https://{STOREFRONT_DOMAIN}{raw}"
-        page_url = data.get("url", "")
-        full_url = page_url if page_url.startswith("http") else f"https://{STOREFRONT_DOMAIN}{page_url}"
+        if not _dumped_category_sample:
+            _dumped_category_sample = True
+            print(f"  SAMPLE raw category JSON (id={category_id}): {json.dumps(data)[:2000]}")
+        full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
         return category_id, {"image": image_url, "url": full_url}
     except requests.RequestException as e:
         _log_failure("category", category_id, str(e))
@@ -532,7 +572,6 @@ def main():
 
     os.makedirs(DOCS_DIR, exist_ok=True)
 
-    import json
     with open(CATEGORIES_OUT, "w", encoding="utf-8") as f:
         json.dump(categories_json, f, indent=2, ensure_ascii=False)
     with open(PRODUCTS_OUT, "w", encoding="utf-8") as f:
