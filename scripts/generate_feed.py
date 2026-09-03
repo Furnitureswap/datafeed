@@ -353,14 +353,20 @@ def _resolve_url_and_image(data, fallback_domain):
         page_url = (data.get("seo") or {}).get("url") or ""
     full_url = page_url if page_url.startswith("http") else (f"https://{fallback_domain}{page_url}" if page_url else "")
 
+    IMAGE_SIZE = "700x700"  # confirmed working suffix requested for feed images
+
     images = data.get("images") or []
     image_url = ""
     if images:
         img0 = images[0] if isinstance(images[0], dict) else {}
         raw = img0.get("url") or img0.get("image_url") or ""
+        if raw and not raw.startswith("http"):
+            raw = f"{raw.rstrip('/')}/{IMAGE_SIZE}"
         image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
     if not image_url:
         raw = data.get("image_url") or ""
+        if raw and not raw.startswith("http"):
+            raw = f"{raw.rstrip('/')}/{IMAGE_SIZE}"
         image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
     if not image_url:
         # CONFIRMED against a real working image URL from the live site:
@@ -374,7 +380,7 @@ def _resolve_url_and_image(data, fallback_domain):
             if doc_id and doc_name:
                 image_url = (
                     f"https://cdn3.zohoecommerce.com/product-images/"
-                    f"{quote(doc_name)}/{doc_id}/600x600?storefront_domain={fallback_domain}"
+                    f"{quote(doc_name)}/{doc_id}/{IMAGE_SIZE}?storefront_domain={fallback_domain}"
                 )
 
     return full_url, image_url
@@ -523,7 +529,7 @@ def _local_category_url_and_image(category, storefront_domain):
     image = ""
     doc_id = category.get("document_id") or ""
     if doc_id:
-        image = f"https://cdn3.zohoecommerce.com/product-images/image.jpg/{doc_id}/600x600?storefront_domain={storefront_domain}"
+        image = f"https://cdn3.zohoecommerce.com/product-images/image.jpg/{doc_id}/700x700?storefront_domain={storefront_domain}"
 
     return url, image
 
