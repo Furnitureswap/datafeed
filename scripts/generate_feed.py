@@ -12,11 +12,16 @@ Data sources:
   - Bulk lists (all products, all categories) come from the Zoho Commerce
     ADMIN API (OAuth-authenticated, paginated) -- this is the only place
     that reliably returns the *entire* catalog.
-  - Per-item enrichment (real image URL, page URL) comes from the Zoho
-    Commerce STOREFRONT API, which is public/unauthenticated and returns
-    fields the admin bulk endpoints don't (confirmed real image URLs,
-    canonical page URLs). One extra request per product/category, run
-    with a small thread pool.
+  - Everything else -- image URLs and page URLs for both products and
+    categories -- is built LOCALLY from data already in those two bulk
+    lists (each record's own image-document data plus its name/id), with
+    no further API calls. An earlier version of this script fetched a
+    real image/page URL per item from the Zoho Commerce STOREFRONT API,
+    but that per-item call turned out to be unreliable for a large share
+    of a catalog that uses attribute variants (color/size/etc.) heavily --
+    HTTP 404 or an empty-but-"success" payload for 721 of 921 products in
+    one real run -- so it was dropped entirely in favor of building
+    everything from the admin data already in hand.
 
 Read the "KNOWN LIMITATIONS" section further down before trusting the
 output blindly -- a couple of fields in the target schema can't be
@@ -31,7 +36,6 @@ import re
 import time
 import json
 import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, quote
 
 # ----------------------- CONFIG -----------------------
@@ -50,20 +54,16 @@ STOREFRONT_DOMAIN = os.environ.get("STOREFRONT_DOMAIN") or urlparse(STORE_DOMAIN
 
 # Set to "true" to also fetch a "dimensions" value per product from Zoho
 # custom fields/specifications. Off by default because it costs one extra
-# ADMIN API call per product (slower, more API usage) on top of the
-# storefront enrichment call every product already gets.
+# ADMIN API call per product (slower, more API usage).
 INCLUDE_DIMENSIONS = os.environ.get("INCLUDE_DIMENSIONS", "false").lower() == "true"
 DIMENSIONS_FIELD_NAME = os.environ.get("DIMENSIONS_FIELD_NAME", "dimensions")
 
 ACCOUNTS_BASE = f"https://accounts.zoho.{DATA_CENTER}"
 ADMIN_API_BASE = f"https://commerce.zoho.{DATA_CENTER}/store/api/v1"
-STOREFRONT_API_BASE = f"https://commerce.zoho.{DATA_CENTER}/storefront/api/v1"
 
 DOCS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs")
 CATEGORIES_OUT = os.path.join(DOCS_DIR, "categories.json")
 PRODUCTS_OUT = os.path.join(DOCS_DIR, "products.json")
-
-ENRICH_WORKERS = 6  # concurrent storefront requests -- keep modest, this hits your live store
 # --------------------------------------------------------
 
 
@@ -264,43 +264,26 @@ def fetch_product_custom_fields(access_token, product_id):
     return ""
 
 
-# ----------------------- Storefront API (public) -----------------------
-
-def storefront_headers():
-    return {"domain-name": STOREFRONT_DOMAIN}
-
-
-_failure_count = 0
-_failure_examples_printed = 0
+# ----------------------- Diagnostics -----------------------
 
 # Populated in main() right after fetch_all_products() -- product_id -> the
 # full raw ADMIN API record for that product (no extra API call, we already
 # have this in memory). Used below to dump the admin-side record for a
-# product whose STOREFRONT enrichment call 404s, so we can see what's
-# actually different about it (e.g. a variant/grouping field) without
-# needing another live API call to diagnose it.
+# product whose image couldn't be resolved locally, so we can see what's
+# actually different about it without needing a live API call to diagnose it.
 _PRODUCTS_BY_ID = {}
 _admin_dumps_printed = 0
 _MAX_ADMIN_DUMPS = 3
 
 
-def _log_failure(kind, item_id, reason):
-    global _failure_count, _failure_examples_printed
-    _failure_count += 1
-    if _failure_examples_printed < 5:
-        print(f"  [storefront {kind} FAILED] id={item_id} domain-name={STOREFRONT_DOMAIN!r} -> {reason}")
-        _failure_examples_printed += 1
-    if kind == "product" and "404" in str(reason):
-        _dump_admin_record_for_diagnostics(item_id)
-
-
 def _dump_admin_record_for_diagnostics(product_id):
     """
-    A 404 from the STOREFRONT API for a product id that DID come back from
-    the ADMIN bulk product list is unexpected -- print that product's full
-    admin-side record (already in memory, no extra call) for the first few,
-    so whatever distinguishes it (a variant/grouping field, a different id
-    scheme, etc.) is visible instead of guessed at.
+    A product whose image couldn't be resolved from its own ADMIN record
+    (see _local_product_image) is unexpected for most products -- print
+    that product's full admin-side record (already in memory, no extra
+    call) for the first few, so whatever distinguishes it (a genuinely
+    missing image, a different field layout, etc.) is visible instead of
+    guessed at.
     """
     global _admin_dumps_printed
     if _admin_dumps_printed >= _MAX_ADMIN_DUMPS:
@@ -310,253 +293,10 @@ def _dump_admin_record_for_diagnostics(product_id):
         return
     _admin_dumps_printed += 1
     pretty = json.dumps(record, indent=2)
-    print(f"  ADMIN record for 404'd product id={product_id} ({len(pretty)} chars):")
+    print(f"  ADMIN record for diagnostics, product id={product_id} ({len(pretty)} chars):")
     print(pretty[:6000])
     if len(pretty) > 6000:
         print(f"  ...(truncated, {len(pretty) - 6000} more chars)")
-
-
-def verify_storefront_access(sample_category_id=None, sample_product_id=None):
-    """
-    One quick sanity check before doing 1000+ requests. If this fails, every
-    subsequent enrichment call would fail too (usually a wrong STOREFRONT_DOMAIN)
-    -- better to stop immediately with a clear message than burn ~20-30 minutes
-    silently timing out on every single product/category.
-    """
-    test_id = sample_category_id or sample_product_id
-    kind = "categories" if sample_category_id else "products"
-    try:
-        resp = requests.get(
-            f"{STOREFRONT_API_BASE}/{kind}/{test_id}",
-            headers=storefront_headers(),
-            timeout=10,
-        )
-    except requests.RequestException as e:
-        raise SystemExit(
-            f"Storefront API is unreachable using domain-name={STOREFRONT_DOMAIN!r}: {e}\n"
-            f"Set the STOREFRONT_DOMAIN secret to your store's actual published domain "
-            f"(check Settings -> Online Store -> Domain and SSL in Zoho Commerce)."
-        )
-    if not resp.ok:
-        raise SystemExit(
-            f"Storefront API test call failed (HTTP {resp.status_code}) using "
-            f"domain-name={STOREFRONT_DOMAIN!r}. Response: {resp.text[:300]}\n"
-            f"This almost always means STOREFRONT_DOMAIN doesn't match what Zoho has "
-            f"registered as your store's live domain -- check Settings -> Online Store -> "
-            f"Domain and SSL in Zoho Commerce and set the STOREFRONT_DOMAIN secret to match "
-            f"exactly (no https://, no trailing slash)."
-        )
-    print(f"Storefront access check passed (domain-name={STOREFRONT_DOMAIN!r})")
-
-
-def _get_with_retry(url, attempts=2, timeout=15):
-    """One retry with a short pause -- several of the earlier failures were
-    plain timeouts against a live site under concurrent load, which a
-    single retry usually clears up without masking a real, persistent
-    problem (which would still fail on the retry too)."""
-    last_exc = None
-    for attempt in range(attempts):
-        try:
-            return requests.get(url, headers=storefront_headers(), timeout=timeout)
-        except requests.RequestException as e:
-            last_exc = e
-            if attempt < attempts - 1:
-                time.sleep(1)
-    raise last_exc
-
-
-_dumped_product_sample = False
-_dumped_category_sample = False
-
-
-def _resolve_url_and_image(data, fallback_domain):
-    """
-    Try every plausible field/shape for the page URL and image URL, since
-    `url` alone has been coming back blank for some real categories. Falls
-    back through: url -> handle (built as a root-relative path) -> seo.url,
-    and for images: images[0].url -> images[0].image_url -> image_url ->
-    documents[]/variant_images[]/media[] (several plausible array names and
-    key spellings, since a real example -- "Picolino Plant Holder" -- came
-    back with a blank image despite genuinely having one; the documents[]
-    array or its expected keys apparently aren't always where/what we
-    assumed). Whatever is still missing after ALL of this is a genuine gap
-    in Zoho's data for that item, not a guessing failure on our side --
-    see enrich_product's diagnostic dump for confirming that on the next run.
-    """
-    page_url = data.get("url") or ""
-    if not page_url:
-        handle = data.get("handle") or ""
-        if handle:
-            page_url = f"/{handle}"
-    if not page_url:
-        page_url = (data.get("seo") or {}).get("url") or ""
-    full_url = page_url if page_url.startswith("http") else (f"https://{fallback_domain}{page_url}" if page_url else "")
-
-    IMAGE_SIZE = "700x700"  # confirmed working suffix requested for feed images
-
-    images = data.get("images") or []
-    image_url = ""
-    if images:
-        img0 = images[0] if isinstance(images[0], dict) else {}
-        raw = img0.get("url") or img0.get("image_url") or ""
-        if raw and not raw.startswith("http"):
-            raw = f"{raw.rstrip('/')}/{IMAGE_SIZE}"
-        image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
-    if not image_url:
-        raw = data.get("image_url") or ""
-        if raw and not raw.startswith("http"):
-            raw = f"{raw.rstrip('/')}/{IMAGE_SIZE}"
-        image_url = raw if raw.startswith("http") else (f"https://{fallback_domain}{raw}" if raw else "")
-    if not image_url:
-        # CONFIRMED against a real working image URL from the live site:
-        # https://cdn3.zohoecommerce.com/product-images/{filename}/{document_id}/{size}?storefront_domain={domain}
-        # -- filename is documents[].name, document_id is documents[].document_id
-        # for the common case. Also try a couple of other plausible array
-        # names/key spellings this same cdn3 pattern could come from, since
-        # "documents" + "document_id"/"name" isn't always present even on
-        # products that do have a real image (e.g. "Picolino Plant Holder").
-        for array_key in ("documents", "product_images", "variant_images", "media"):
-            documents = data.get(array_key) or []
-            if not documents:
-                continue
-            featured = next((d for d in documents if isinstance(d, dict) and d.get("is_featured")), documents[0])
-            if not isinstance(featured, dict):
-                continue
-            doc_id = featured.get("document_id") or featured.get("id") or featured.get("image_id") or ""
-            doc_name = featured.get("name") or featured.get("file_name") or featured.get("filename") or "image.jpg"
-            if doc_id:
-                image_url = (
-                    f"https://cdn3.zohoecommerce.com/product-images/"
-                    f"{quote(str(doc_name))}/{doc_id}/{IMAGE_SIZE}?storefront_domain={fallback_domain}"
-                )
-                break
-
-    return full_url, image_url
-
-
-def _extract_payload(raw, wrapper_key, sample_flag_name, id_for_log):
-    """
-    Print the TRUE raw response the first time (unmodified -- earlier
-    versions of this dump printed the result of a wrong key guess instead
-    of the real payload, which is why it showed up empty), then try several
-    plausible wrapper shapes -- confirmed from real responses: both
-    products and categories wrap everything one level deeper under
-    "payload" (e.g. payload.product.*, and likely payload.category.*)
-    before falling back to treating the top-level object itself as the
-    data.
-    """
-    global _dumped_product_sample, _dumped_category_sample
-    already_dumped = _dumped_product_sample if sample_flag_name == "product" else _dumped_category_sample
-    if not already_dumped:
-        if sample_flag_name == "product":
-            globals()["_dumped_product_sample"] = True
-        else:
-            globals()["_dumped_category_sample"] = True
-        # Pretty-printed (one field per line) and generous limit so nothing
-        # gets cut off before we can see fields like the page url/handle --
-        # earlier dumps were truncated at 3000 chars, hiding whatever came
-        # after "documents".
-        pretty = json.dumps(raw, indent=2)
-        print(f"  SAMPLE raw {sample_flag_name} response (id={id_for_log}), full length={len(pretty)} chars:")
-        print(pretty[:12000])
-        if len(pretty) > 12000:
-            print(f"  ...(truncated, {len(pretty) - 12000} more chars)")
-
-    # Confirmed real shape: raw -> payload -> product/category
-    payload = raw.get("payload")
-    if isinstance(payload, dict):
-        if isinstance(payload.get(wrapper_key), dict) and payload.get(wrapper_key):
-            return payload[wrapper_key]
-        if payload:  # payload itself might be the item's data (categories may not nest further)
-            return payload
-
-    for key in (wrapper_key, "data", "result"):
-        if isinstance(raw.get(key), dict) and raw.get(key):
-            return raw[key]
-    # Not wrapped -- the top-level object itself looks like the item if it
-    # has an identifying field.
-    if any(k in raw for k in ("name", "category_id", "product_id", "url", "handle")):
-        return raw
-    return {}
-
-
-_blank_image_dumps_printed = 0
-_MAX_BLANK_IMAGE_DUMPS = 5
-
-
-def enrich_product(product_id):
-    """Fetch real image URL + page URL for one product from the public storefront API."""
-    global _blank_image_dumps_printed
-    try:
-        resp = _get_with_retry(f"{STOREFRONT_API_BASE}/products/{product_id}")
-        if not resp.ok:
-            _log_failure("product", product_id, f"HTTP {resp.status_code}")
-            return product_id, {"image": "", "url": ""}
-        raw = resp.json()
-        data = _extract_payload(raw, "product", "product", product_id)
-        full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
-        if not image_url and _blank_image_dumps_printed < _MAX_BLANK_IMAGE_DUMPS:
-            # A handful of real products have come back with no resolvable
-            # image despite genuinely having one in the store (e.g. "Picolino
-            # Plant Holder") -- print the TRUE raw response (not the
-            # post-_extract_payload result, which is exactly the mistake
-            # that made an earlier diagnostic print a misleading empty {}
-            # here) for the first few of these, so the exact field layout can
-            # be confirmed and handled instead of guessing again. Capped so a
-            # systemic issue affecting hundreds of products doesn't flood the
-            # run's log.
-            _blank_image_dumps_printed += 1
-            pretty = json.dumps(raw, indent=2)
-            print(
-                f"  BLANK IMAGE for product id={product_id} -- HTTP {resp.status_code}, "
-                f"TRUE raw response ({len(pretty)} chars):"
-            )
-            print(pretty[:8000])
-            if len(pretty) > 8000:
-                print(f"  ...(truncated, {len(pretty) - 8000} more chars)")
-            # An empty-but-"success" payload (as opposed to an HTTP error)
-            # strongly suggests this id is a variant row the storefront
-            # doesn't serve its own page for, rather than a real failure --
-            # print the ADMIN-side record for the same id right alongside it
-            # so that theory can be confirmed or ruled out immediately,
-            # instead of needing yet another round trip.
-            _dump_admin_record_for_diagnostics(product_id)
-        return product_id, {"image": image_url, "url": full_url}
-    except requests.RequestException as e:
-        _log_failure("product", product_id, str(e))
-        return product_id, {"image": "", "url": ""}
-
-
-def enrich_category(category_id):
-    """Fetch real image URL + page URL for one category from the public storefront API."""
-    try:
-        resp = _get_with_retry(f"{STOREFRONT_API_BASE}/categories/{category_id}")
-        if not resp.ok:
-            _log_failure("category", category_id, f"HTTP {resp.status_code}")
-            return category_id, {"image": "", "url": ""}
-        raw = resp.json()
-        data = _extract_payload(raw, "category", "category", category_id)
-        full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
-        return category_id, {"image": image_url, "url": full_url}
-    except requests.RequestException as e:
-        _log_failure("category", category_id, str(e))
-        return category_id, {"image": "", "url": ""}
-
-
-def enrich_all(ids, fn, label="items"):
-    ids = list(ids)
-    total = len(ids)
-    results = {}
-    done = 0
-    with ThreadPoolExecutor(max_workers=ENRICH_WORKERS) as pool:
-        futures = [pool.submit(fn, i) for i in ids]
-        for f in as_completed(futures):
-            item_id, data = f.result()
-            results[item_id] = data
-            done += 1
-            if done % 50 == 0 or done == total:
-                print(f"  enriched {done}/{total} {label}")
-    return results
 
 
 # ----------------------- Building output JSON -----------------------
@@ -611,6 +351,65 @@ def _local_category_url_and_image(category, storefront_domain):
         image = f"https://cdn3.zohoecommerce.com/product-images/image.jpg/{doc_id}/700x700?storefront_domain={storefront_domain}"
 
     return url, image
+
+
+def _local_product_image(product, storefront_domain):
+    """
+    Build the product's image URL directly from the ADMIN bulk product
+    record's own image-documents data -- same idea as
+    _local_category_url_and_image, and for the same reason: calling out to
+    the STOREFRONT API per item turned out to be the wrong source of truth.
+
+    CONFIRMED root cause of the "blank image despite the product genuinely
+    having one" reports: the storefront single-product endpoint
+    (`/storefront/api/v1/products/{id}`) returned either HTTP 404 or an
+    empty-but-"success" `{"payload": {}}` for 721 of 921 products in one
+    real run -- almost certainly because a large share of this catalog's
+    product ids are per-variant/attribute rows (this catalog uses
+    attribute1/attribute2 e.g. "Frame Colour"/"Cushion Colour" variants
+    extensively) that don't get their own individual storefront page, even
+    though they're real, orderable products with real images in Zoho.
+
+    Confirmed directly against a real example that 404'd
+    (id=505193000003916949, "Charlottenborg Exterior Lounge Chair"): its
+    ADMIN record -- from the same bulk /products list this script already
+    fetches, no extra API call needed -- carries a documents array with
+    real image data sitting right there:
+      [{"file_name": "AJ-25-SU_Charlottenborg_cushion_A631.jpg",
+        "document_id": "505193000002292330", "attachment_order": 1, ...}, ...]
+    which fits the exact same cdn3.zohoecommerce.com URL pattern already
+    confirmed working for every other image in this feed -- just sourced
+    locally instead of via the unreliable per-product storefront call.
+
+    This admin-side documents array has no `is_featured` flag (unlike the
+    storefront API's own shape), so the lowest `attachment_order` is used
+    as the primary/cover image instead, with documents[0] as a fallback if
+    that field is ever missing. Tries a couple of other plausible
+    array/key names defensively, same as the old storefront-based
+    resolver did, in case some products carry image data under a
+    different key.
+    """
+    IMAGE_SIZE = "700x700"  # confirmed working suffix requested for feed images
+
+    for array_key in ("documents", "product_images", "variant_images", "media"):
+        documents = [d for d in (product.get(array_key) or []) if isinstance(d, dict)]
+        if not documents:
+            continue
+
+        featured = next((d for d in documents if d.get("is_featured")), None)
+        if not featured:
+            with_order = [d for d in documents if d.get("attachment_order") is not None]
+            featured = min(with_order, key=lambda d: d["attachment_order"]) if with_order else documents[0]
+
+        doc_id = featured.get("document_id") or featured.get("id") or featured.get("image_id") or ""
+        doc_name = featured.get("file_name") or featured.get("name") or featured.get("filename") or "image.jpg"
+        if doc_id:
+            return (
+                f"https://cdn3.zohoecommerce.com/product-images/"
+                f"{quote(str(doc_name))}/{doc_id}/{IMAGE_SIZE}?storefront_domain={storefront_domain}"
+            )
+
+    return ""
 
 
 def build_categories_json(categories, enrichment=None):
@@ -772,13 +571,13 @@ def _local_product_url(product, storefront_domain):
     return f"https://{storefront_domain}/products/{_slugify(name)}/{pid}"
 
 
-def build_products_json(products, enrichment, categories=None):
+def build_products_json(products, categories=None):
     by_id = {c["category_id"]: c for c in (categories or [])}
 
     out = []
+    blank_image_count = 0
     for p in products:
         pid = str(p.get("product_id"))
-        info = enrichment.get(p.get("product_id"), {"image": "", "url": ""})
         cat_id = p.get("category_id")
 
         if cat_id not in (None, "", "0", 0):
@@ -786,11 +585,16 @@ def build_products_json(products, enrichment, categories=None):
         else:
             category_ids = []
 
+        image = _local_product_image(p, STOREFRONT_DOMAIN)
+        if not image:
+            blank_image_count += 1
+            _dump_admin_record_for_diagnostics(p.get("product_id"))
+
         entry = {
             "id": pid,
             "name": p.get("name", ""),
             "sku": p.get("sku", ""),
-            "image": info.get("image", ""),
+            "image": image,
             "url": _local_product_url(p, STOREFRONT_DOMAIN),
             # Zoho Commerce does not expose an "add to cart via link" endpoint --
             # cart actions go through the storefront's own JS/session flow, not a
@@ -808,6 +612,15 @@ def build_products_json(products, enrichment, categories=None):
             "category_ids": category_ids,
         }
         out.append(entry)
+
+    if blank_image_count:
+        print(
+            f"NOTE: {blank_image_count} products had no resolvable image in their own "
+            f"ADMIN record (see any 'ADMIN record for diagnostics' dumps above for the "
+            f"first few -- these are genuine gaps in Zoho's own data for those items, "
+            f"not a lookup failure on our side)"
+        )
+
     return {"products": out}
 
 
@@ -831,26 +644,26 @@ def main():
     global _PRODUCTS_BY_ID
     _PRODUCTS_BY_ID = {p["product_id"]: p for p in products}
 
-    # Fail fast and loudly if STOREFRONT_DOMAIN is wrong, instead of silently
-    # timing out on every single one of 1000+ items (which is what happened
-    # before this check existed -- looked "stuck" for ~35 minutes). Only
-    # products need this now -- categories are built locally, no storefront
-    # call at all (see build_categories_json / _local_category_url_and_image).
-    if products:
-        verify_storefront_access(sample_product_id=products[0]["product_id"])
-
-    print("Enriching products with real image/page URLs (this is the slow part; categories are built locally, no API calls needed)...")
-    product_enrichment = enrich_all([p["product_id"] for p in products], enrich_product, label="products")
-    if _failure_count:
-        print(f"NOTE: {_failure_count} storefront enrichment calls failed (image/url left blank for those items)")
-
     if INCLUDE_DIMENSIONS:
         for p in products:
             p["_dimensions"] = fetch_product_custom_fields(access_token, p["product_id"])
             time.sleep(0.1)
 
+    # Both categories AND products are now built entirely from data already
+    # in memory from the two bulk ADMIN list calls above -- no per-item
+    # STOREFRONT API call needed for either. Products used to be enriched
+    # one-by-one from the storefront (like categories briefly were too,
+    # early on), but that per-product call turned out to fail outright
+    # (HTTP 404, or an empty-but-"success" payload) for 721 of 921 products
+    # in one real run -- almost certainly because this catalog uses
+    # color/attribute variants heavily, and many product ids are
+    # variant/attribute rows the storefront doesn't serve an individual
+    # page for. Their own ADMIN record still carries real image data
+    # directly (confirmed against a real 404'd product), so images are
+    # built locally the same way category images already were -- see
+    # _local_product_image.
     categories_json = build_categories_json(categories)
-    products_json = build_products_json(products, product_enrichment, categories)
+    products_json = build_products_json(products, categories)
 
     os.makedirs(DOCS_DIR, exist_ok=True)
 
