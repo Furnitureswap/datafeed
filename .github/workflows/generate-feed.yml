@@ -2,8 +2,8 @@ name: Generate Zoho Commerce Feed
 
 on:
   schedule:
-    # Runs daily at 06:00 UTC. Edit the cron expression to change frequency.
-    - cron: '0 6 * * *'
+    # Runs twice a day, 06:00 and 18:00 UTC. Edit the cron expression to change frequency.
+    - cron: '0 6,18 * * *'
   workflow_dispatch: {}  # lets you also trigger a run manually from the Actions tab
 
 permissions:
