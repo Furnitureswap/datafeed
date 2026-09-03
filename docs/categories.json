@@ -1,9 +1,29 @@
 {
   "groups": [
     {
+      "parent_id": "-1",
+      "parent_name": "ROOT",
+      "categories": [
+        {
+          "id": "-1",
+          "name": "ROOT",
+          "url": "https://www.strandroadireland.com/categories/root/-1",
+          "image": "",
+          "parent_id": ""
+        }
+      ]
+    },
+    {
       "parent_id": "505193000000202002",
       "parent_name": "Products",
       "categories": [
+        {
+          "id": "505193000000202002",
+          "name": "Products",
+          "url": "https://www.strandroadireland.com/categories/products/505193000000202002",
+          "image": "https://cdn3.zohoecommerce.com/product-images/image.jpg/505193000002442831/700x700?storefront_domain=www.strandroadireland.com",
+          "parent_id": ""
+        },
         {
           "id": "505193000000165002",
           "name": "Outdoor Furniture",
