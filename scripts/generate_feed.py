@@ -498,13 +498,19 @@ def enrich_product(product_id):
         if not image_url and _blank_image_dumps_printed < _MAX_BLANK_IMAGE_DUMPS:
             # A handful of real products have come back with no resolvable
             # image despite genuinely having one in the store (e.g. "Picolino
-            # Plant Holder") -- print the true raw shape for the first few of
-            # these so the exact field layout can be confirmed and handled,
-            # instead of guessing again. Capped so a systemic issue affecting
-            # hundreds of products doesn't flood the run's log.
+            # Plant Holder") -- print the TRUE raw response (not the
+            # post-_extract_payload result, which is exactly the mistake
+            # that made an earlier diagnostic print a misleading empty {}
+            # here) for the first few of these, so the exact field layout can
+            # be confirmed and handled instead of guessing again. Capped so a
+            # systemic issue affecting hundreds of products doesn't flood the
+            # run's log.
             _blank_image_dumps_printed += 1
-            pretty = json.dumps(data, indent=2)
-            print(f"  BLANK IMAGE for product id={product_id} -- raw item data ({len(pretty)} chars):")
+            pretty = json.dumps(raw, indent=2)
+            print(
+                f"  BLANK IMAGE for product id={product_id} -- HTTP {resp.status_code}, "
+                f"TRUE raw response ({len(pretty)} chars):"
+            )
             print(pretty[:8000])
             if len(pretty) > 8000:
                 print(f"  ...(truncated, {len(pretty) - 8000} more chars)")
