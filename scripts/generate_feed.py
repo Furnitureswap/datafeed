@@ -340,9 +340,14 @@ def _resolve_url_and_image(data, fallback_domain):
     Try every plausible field/shape for the page URL and image URL, since
     `url` alone has been coming back blank for some real categories. Falls
     back through: url -> handle (built as a root-relative path) -> seo.url,
-    and for images: images[0].url -> images[0].image_url -> image_url.
-    Whatever is still missing after this is a genuine gap in Zoho's data
-    for that item, not a guessing failure on our side.
+    and for images: images[0].url -> images[0].image_url -> image_url ->
+    documents[]/variant_images[]/media[] (several plausible array names and
+    key spellings, since a real example -- "Picolino Plant Holder" -- came
+    back with a blank image despite genuinely having one; the documents[]
+    array or its expected keys apparently aren't always where/what we
+    assumed). Whatever is still missing after ALL of this is a genuine gap
+    in Zoho's data for that item, not a guessing failure on our side --
+    see enrich_product's diagnostic dump for confirming that on the next run.
     """
     page_url = data.get("url") or ""
     if not page_url:
@@ -371,17 +376,26 @@ def _resolve_url_and_image(data, fallback_domain):
     if not image_url:
         # CONFIRMED against a real working image URL from the live site:
         # https://cdn3.zohoecommerce.com/product-images/{filename}/{document_id}/{size}?storefront_domain={domain}
-        # -- filename is documents[].name, document_id is documents[].document_id.
-        documents = data.get("documents") or []
-        if documents:
-            featured = next((d for d in documents if d.get("is_featured")), documents[0])
-            doc_id = featured.get("document_id") or ""
-            doc_name = featured.get("name") or ""
-            if doc_id and doc_name:
+        # -- filename is documents[].name, document_id is documents[].document_id
+        # for the common case. Also try a couple of other plausible array
+        # names/key spellings this same cdn3 pattern could come from, since
+        # "documents" + "document_id"/"name" isn't always present even on
+        # products that do have a real image (e.g. "Picolino Plant Holder").
+        for array_key in ("documents", "product_images", "variant_images", "media"):
+            documents = data.get(array_key) or []
+            if not documents:
+                continue
+            featured = next((d for d in documents if isinstance(d, dict) and d.get("is_featured")), documents[0])
+            if not isinstance(featured, dict):
+                continue
+            doc_id = featured.get("document_id") or featured.get("id") or featured.get("image_id") or ""
+            doc_name = featured.get("name") or featured.get("file_name") or featured.get("filename") or "image.jpg"
+            if doc_id:
                 image_url = (
                     f"https://cdn3.zohoecommerce.com/product-images/"
-                    f"{quote(doc_name)}/{doc_id}/{IMAGE_SIZE}?storefront_domain={fallback_domain}"
+                    f"{quote(str(doc_name))}/{doc_id}/{IMAGE_SIZE}?storefront_domain={fallback_domain}"
                 )
+                break
 
     return full_url, image_url
 
@@ -432,8 +446,13 @@ def _extract_payload(raw, wrapper_key, sample_flag_name, id_for_log):
     return {}
 
 
+_blank_image_dumps_printed = 0
+_MAX_BLANK_IMAGE_DUMPS = 5
+
+
 def enrich_product(product_id):
     """Fetch real image URL + page URL for one product from the public storefront API."""
+    global _blank_image_dumps_printed
     try:
         resp = _get_with_retry(f"{STOREFRONT_API_BASE}/products/{product_id}")
         if not resp.ok:
@@ -442,6 +461,19 @@ def enrich_product(product_id):
         raw = resp.json()
         data = _extract_payload(raw, "product", "product", product_id)
         full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
+        if not image_url and _blank_image_dumps_printed < _MAX_BLANK_IMAGE_DUMPS:
+            # A handful of real products have come back with no resolvable
+            # image despite genuinely having one in the store (e.g. "Picolino
+            # Plant Holder") -- print the true raw shape for the first few of
+            # these so the exact field layout can be confirmed and handled,
+            # instead of guessing again. Capped so a systemic issue affecting
+            # hundreds of products doesn't flood the run's log.
+            _blank_image_dumps_printed += 1
+            pretty = json.dumps(data, indent=2)
+            print(f"  BLANK IMAGE for product id={product_id} -- raw item data ({len(pretty)} chars):")
+            print(pretty[:8000])
+            if len(pretty) > 8000:
+                print(f"  ...(truncated, {len(pretty) - 8000} more chars)")
         return product_id, {"image": image_url, "url": full_url}
     except requests.RequestException as e:
         _log_failure("product", product_id, str(e))
@@ -535,6 +567,33 @@ def _local_category_url_and_image(category, storefront_domain):
 
 
 def build_categories_json(categories, enrichment=None):
+    """
+    Builds the flat "groups[].categories[]" shape the widget's category
+    browser reads directly (it only ever renders two levels: the group's
+    parent_name as a label, and a flat row of cards for group["categories"]
+    -- it has no concept of drilling deeper than that).
+
+    IMPORTANT FIX: earlier versions of this function only ever added a root
+    category as the group's label/header -- never as a card inside its own
+    "categories" list. That's fine for a root with children (the children
+    become the cards), but for any root category with NO children -- which
+    does happen in this catalog (confirmed live: two real categories,
+    holding products like "Woodland Screen Landscape/Portrait" and "Picoti
+    Bird Feeder", have zero children and were being silently dropped from
+    categories.json entirely, because `[g for g in groups.values() if
+    g["categories"]]` at the bottom discards any group left with an empty
+    "categories" list) -- this made those categories, and every product
+    tagged directly to them, permanently invisible to "Add products" /
+    "Change product": not shown as their own card, and not reachable
+    through any parent either, since they have none.
+
+    Fix: every root is now ALSO added as the first card in its own group
+    (self-referencing) -- same as any other browsable category. For a root
+    WITH children this just adds one extra "browse everything directly
+    under X" card ahead of its more specific children, which is harmless
+    and fairly standard category-browser UX. For a childless root, this is
+    what makes it (and its products) show up at all, instead of vanishing.
+    """
     online_flags = [_is_category_online(c) for c in categories]
     if all(v is None for v in online_flags):
         print(
@@ -563,15 +622,31 @@ def build_categories_json(categories, enrichment=None):
         return cur
 
     groups = {}
-    for c in categories:
-        if is_root(c):
-            groups.setdefault(str(c["category_id"]), {
-                "parent_id": str(c["category_id"]),
-                "parent_name": c.get("name", ""),
-                "categories": [],
-            })
-
     skipped_offline = 0
+
+    for c in categories:
+        if not is_root(c):
+            continue
+        key = str(c["category_id"])
+        group = groups.setdefault(key, {
+            "parent_id": key,
+            "parent_name": c.get("name", ""),
+            "categories": [],
+        })
+        if not online_by_id.get(c["category_id"], True):
+            skipped_offline += 1
+            continue
+        # Self-reference: the root is also its own group's first browsable
+        # card (see docstring above for why this matters).
+        url, image = _local_category_url_and_image(c, STOREFRONT_DOMAIN)
+        group["categories"].append({
+            "id": key,
+            "name": c.get("name", ""),
+            "url": url,
+            "image": image,
+            "parent_id": "",
+        })
+
     for c in categories:
         if is_root(c):
             continue
@@ -600,6 +675,43 @@ def build_categories_json(categories, enrichment=None):
     return {"groups": [g for g in groups.values() if g["categories"]]}
 
 
+def _ancestor_chain_ids(cat_id, by_id):
+    """
+    All ancestor category ids for a product's single directly-assigned
+    category, from the category itself up through every parent to (and
+    including) the ultimate root -- e.g. for a product tagged "Dining
+    Chairs", whose parent is "Indoor Furniture", whose parent is the root
+    "Products": ["Dining Chairs id", "Indoor Furniture id", "Products id"].
+
+    Zoho only lets a product carry ONE direct category, but the widget's
+    "Add products" / "Change product" browser lets a customer click into
+    ANY category card -- including a parent like "Indoor Furniture" -- and
+    expects to see that category's products. Without this expansion, a
+    parent category card with real children but no products tagged
+    directly to IT (the norm -- products are almost always tagged with the
+    most specific child, not the parent) would always show "No products
+    found", even though its children's products are exactly what a
+    customer browsing that parent would expect to see. This walks the
+    chain and includes every ancestor so browsing at any level works.
+
+    If `cat_id` isn't found in `by_id` (e.g. the category itself came back
+    offline/excluded from the categories list, or with an id Zoho didn't
+    return in the categories endpoint at all), it's still included as-is --
+    we just can't expand further up from it.
+    """
+    chain = []
+    seen = set()
+    cur_id = cat_id
+    while cur_id and cur_id not in seen:
+        seen.add(cur_id)
+        chain.append(cur_id)
+        cur = by_id.get(cur_id)
+        if not cur or is_root(cur):
+            break
+        cur_id = cur.get("parent_category_id")
+    return chain
+
+
 def _local_product_url(product, storefront_domain):
     """CONFIRMED pattern from a real example on the live site:
     https://{domain}/products/{slug}/{product_id}
@@ -613,12 +725,19 @@ def _local_product_url(product, storefront_domain):
     return f"https://{storefront_domain}/products/{_slugify(name)}/{pid}"
 
 
-def build_products_json(products, enrichment):
+def build_products_json(products, enrichment, categories=None):
+    by_id = {c["category_id"]: c for c in (categories or [])}
+
     out = []
     for p in products:
         pid = str(p.get("product_id"))
         info = enrichment.get(p.get("product_id"), {"image": "", "url": ""})
         cat_id = p.get("category_id")
+
+        if cat_id not in (None, "", "0", 0):
+            category_ids = [str(cid) for cid in _ancestor_chain_ids(cat_id, by_id)]
+        else:
+            category_ids = []
 
         entry = {
             "id": pid,
@@ -631,11 +750,15 @@ def build_products_json(products, enrichment):
             # plain URL. Left blank on purpose; see README "Known limitations".
             "add_to_cart_url": "",
             "dimensions": p.get("_dimensions", ""),
-            # Zoho Commerce products only support ONE category each (confirmed
-            # across the admin and storefront product APIs), so this is a
-            # single-item array rather than a true multi-category list. See
-            # README "Known limitations".
-            "category_ids": [str(cat_id)] if cat_id not in (None, "", "0", 0) else [],
+            # Zoho Commerce only lets a product carry ONE direct category
+            # (confirmed across the admin and storefront product APIs), but
+            # this list also includes every ANCESTOR of that category (up to
+            # and including the top-level root) -- see _ancestor_chain_ids --
+            # so that the widget's category browser shows this product no
+            # matter which level (leaf, mid, or root) a customer clicks into.
+            # It's still not a true "assign to several unrelated categories"
+            # list; see README "Known limitations".
+            "category_ids": category_ids,
         }
         out.append(entry)
     return {"products": out}
@@ -677,7 +800,7 @@ def main():
             time.sleep(0.1)
 
     categories_json = build_categories_json(categories)
-    products_json = build_products_json(products, product_enrichment)
+    products_json = build_products_json(products, product_enrichment, categories)
 
     os.makedirs(DOCS_DIR, exist_ok=True)
 
