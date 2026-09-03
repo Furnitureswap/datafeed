@@ -27,6 +27,7 @@ in the workflow -- see the top-level README.md for setup).
 """
 
 import os
+import re
 import time
 import json
 import requests
@@ -491,7 +492,43 @@ def _is_category_online(category):
     return None
 
 
-def build_categories_json(categories, enrichment):
+def _slugify(name):
+    s = (name or "").strip().lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    return s.strip("-")
+
+
+def _local_category_url_and_image(category, storefront_domain):
+    """
+    The storefront category endpoint turned out to return an entire
+    product-listing page (hundreds of KB per category) without a clean
+    "category url" field, and is expensive/slow to call 50+ times for no
+    real benefit. Instead, build these directly from data the admin
+    category list already gave us (no extra API call needed):
+      - url: CONFIRMED pattern from real examples on the live site --
+        https://{domain}/categories/{slug}/{category_id}
+        e.g. https://www.strandroadireland.com/categories/dining-chairs/505193000000079002
+      - image: same confirmed cdn3.zohoecommerce.com pattern used for
+        products, using the category's own `document_id` (present in the
+        admin category list per Zoho's docs) if set. UNVERIFIED: the
+        filename segment is a placeholder since the admin list doesn't
+        include the original filename -- if this doesn't load a real
+        image, the document_id itself is still correct and only the
+        cosmetic filename portion would need adjusting.
+    """
+    name = category.get("name", "")
+    cat_id = category.get("category_id", "")
+    url = f"https://{storefront_domain}/categories/{_slugify(name)}/{cat_id}" if name else ""
+
+    image = ""
+    doc_id = category.get("document_id") or ""
+    if doc_id:
+        image = f"https://cdn3.zohoecommerce.com/product-images/image.jpg/{doc_id}/600x600?storefront_domain={storefront_domain}"
+
+    return url, image
+
+
+def build_categories_json(categories, enrichment=None):
     online_flags = [_is_category_online(c) for c in categories]
     if all(v is None for v in online_flags):
         print(
@@ -542,12 +579,12 @@ def build_categories_json(categories, enrichment):
             "parent_name": root.get("name", ""),
             "categories": [],
         })
-        info = enrichment.get(c["category_id"], {"image": "", "url": ""})
+        url, image = _local_category_url_and_image(c, STOREFRONT_DOMAIN)
         group["categories"].append({
             "id": str(c["category_id"]),
             "name": c.get("name", ""),
-            "url": info.get("url", ""),
-            "image": info.get("image", ""),
+            "url": url,
+            "image": image,
             "parent_id": str(c.get("parent_category_id", "")),
         })
 
@@ -555,6 +592,19 @@ def build_categories_json(categories, enrichment):
         print(f"Skipped {skipped_offline} offline categories")
 
     return {"groups": [g for g in groups.values() if g["categories"]]}
+
+
+def _local_product_url(product, storefront_domain):
+    """CONFIRMED pattern from a real example on the live site:
+    https://{domain}/products/{slug}/{product_id}
+    e.g. https://www.strandroadireland.com/products/victor-dining-armchair/505193000000299381
+    Built locally (no API call, no dependence on the storefront response's
+    own `url` field, which wasn't reliably present)."""
+    name = product.get("name", "")
+    pid = product.get("product_id", "")
+    if not name or not pid:
+        return ""
+    return f"https://{storefront_domain}/products/{_slugify(name)}/{pid}"
 
 
 def build_products_json(products, enrichment):
@@ -569,7 +619,7 @@ def build_products_json(products, enrichment):
             "name": p.get("name", ""),
             "sku": p.get("sku", ""),
             "image": info.get("image", ""),
-            "url": info.get("url", ""),
+            "url": _local_product_url(p, STOREFRONT_DOMAIN),
             # Zoho Commerce does not expose an "add to cart via link" endpoint --
             # cart actions go through the storefront's own JS/session flow, not a
             # plain URL. Left blank on purpose; see README "Known limitations".
@@ -604,14 +654,13 @@ def main():
 
     # Fail fast and loudly if STOREFRONT_DOMAIN is wrong, instead of silently
     # timing out on every single one of 1000+ items (which is what happened
-    # before this check existed -- looked "stuck" for ~35 minutes).
-    if categories:
-        verify_storefront_access(sample_category_id=categories[0]["category_id"])
-    elif products:
+    # before this check existed -- looked "stuck" for ~35 minutes). Only
+    # products need this now -- categories are built locally, no storefront
+    # call at all (see build_categories_json / _local_category_url_and_image).
+    if products:
         verify_storefront_access(sample_product_id=products[0]["product_id"])
 
-    print("Enriching with real image/page URLs (this is the slow part)...")
-    category_enrichment = enrich_all([c["category_id"] for c in categories], enrich_category, label="categories")
+    print("Enriching products with real image/page URLs (this is the slow part; categories are built locally, no API calls needed)...")
     product_enrichment = enrich_all([p["product_id"] for p in products], enrich_product, label="products")
     if _failure_count:
         print(f"NOTE: {_failure_count} storefront enrichment calls failed (image/url left blank for those items)")
@@ -621,7 +670,7 @@ def main():
             p["_dimensions"] = fetch_product_custom_fields(access_token, p["product_id"])
             time.sleep(0.1)
 
-    categories_json = build_categories_json(categories, category_enrichment)
+    categories_json = build_categories_json(categories)
     products_json = build_products_json(products, product_enrichment)
 
     os.makedirs(DOCS_DIR, exist_ok=True)
