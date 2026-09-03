@@ -280,8 +280,8 @@ _failure_examples_printed = 0
 # actually different about it (e.g. a variant/grouping field) without
 # needing another live API call to diagnose it.
 _PRODUCTS_BY_ID = {}
-_404_admin_dumps_printed = 0
-_MAX_404_ADMIN_DUMPS = 3
+_admin_dumps_printed = 0
+_MAX_ADMIN_DUMPS = 3
 
 
 def _log_failure(kind, item_id, reason):
@@ -291,10 +291,10 @@ def _log_failure(kind, item_id, reason):
         print(f"  [storefront {kind} FAILED] id={item_id} domain-name={STOREFRONT_DOMAIN!r} -> {reason}")
         _failure_examples_printed += 1
     if kind == "product" and "404" in str(reason):
-        _dump_admin_record_on_404(item_id)
+        _dump_admin_record_for_diagnostics(item_id)
 
 
-def _dump_admin_record_on_404(product_id):
+def _dump_admin_record_for_diagnostics(product_id):
     """
     A 404 from the STOREFRONT API for a product id that DID come back from
     the ADMIN bulk product list is unexpected -- print that product's full
@@ -302,13 +302,13 @@ def _dump_admin_record_on_404(product_id):
     so whatever distinguishes it (a variant/grouping field, a different id
     scheme, etc.) is visible instead of guessed at.
     """
-    global _404_admin_dumps_printed
-    if _404_admin_dumps_printed >= _MAX_404_ADMIN_DUMPS:
+    global _admin_dumps_printed
+    if _admin_dumps_printed >= _MAX_ADMIN_DUMPS:
         return
     record = _PRODUCTS_BY_ID.get(product_id)
     if not record:
         return
-    _404_admin_dumps_printed += 1
+    _admin_dumps_printed += 1
     pretty = json.dumps(record, indent=2)
     print(f"  ADMIN record for 404'd product id={product_id} ({len(pretty)} chars):")
     print(pretty[:6000])
@@ -514,6 +514,13 @@ def enrich_product(product_id):
             print(pretty[:8000])
             if len(pretty) > 8000:
                 print(f"  ...(truncated, {len(pretty) - 8000} more chars)")
+            # An empty-but-"success" payload (as opposed to an HTTP error)
+            # strongly suggests this id is a variant row the storefront
+            # doesn't serve its own page for, rather than a real failure --
+            # print the ADMIN-side record for the same id right alongside it
+            # so that theory can be confirmed or ruled out immediately,
+            # instead of needing yet another round trip.
+            _dump_admin_record_for_diagnostics(product_id)
         return product_id, {"image": image_url, "url": full_url}
     except requests.RequestException as e:
         _log_failure("product", product_id, str(e))
