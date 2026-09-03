@@ -1,4 +1,1934 @@
 {
-  "products": [],
-  "_note": "Placeholder. Replaced automatically once the GitHub Actions workflow runs successfully for the first time."
+  "products": [
+    {
+      "id": "505193000000053297",
+      "name": "1900 Armchair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179"
+      ]
+    },
+    {
+      "id": "505193000000327888",
+      "name": "1900 Bench",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079004"
+      ]
+    },
+    {
+      "id": "505193000000331492",
+      "name": "1900 Cabriolet Armchair incl Cushion",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617815"
+      ]
+    },
+    {
+      "id": "505193000000314086",
+      "name": "1900 Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179"
+      ]
+    },
+    {
+      "id": "505193000000323029",
+      "name": "1900 Low Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000361001",
+      "name": "1900 Table D117",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000000314753",
+      "name": "1900 Table D96",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000002641011",
+      "name": "Accroche Coeurs Coat Stand",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789"
+      ]
+    },
+    {
+      "id": "505193000001273007",
+      "name": "Achille Dining Table Square Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000003964090",
+      "name": "Acrobate Coat Peg",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789"
+      ]
+    },
+    {
+      "id": "505193000000203071",
+      "name": "Adada Rocking Horse",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202026"
+      ]
+    },
+    {
+      "id": "505193000000299881",
+      "name": "Adirondack Armchair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617815"
+      ]
+    },
+    {
+      "id": "505193000000299899",
+      "name": "Adirondack Footrest",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618649"
+      ]
+    },
+    {
+      "id": "505193000000626267",
+      "name": "Adirondack Side Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000002332325",
+      "name": "Akari Dining Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179"
+      ]
+    },
+    {
+      "id": "505193000002331929",
+      "name": "Akari Lounge Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617815"
+      ]
+    },
+    {
+      "id": "505193000002331097",
+      "name": "Akari Lounge Sofa 2.5 Seater",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618829"
+      ]
+    },
+    {
+      "id": "505193000002331537",
+      "name": "Akari Lounge Sofa 3 Seater",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618829"
+      ]
+    },
+    {
+      "id": "505193000003402383",
+      "name": "Aksel Teak Dining Table D120cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000003273036",
+      "name": "Alanis Dining Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000001274017",
+      "name": "Albert Dining Table A Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000000299361",
+      "name": "Alex Lounge Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079006"
+      ]
+    },
+    {
+      "id": "505193000000977302",
+      "name": "Alex Lounge Sofa",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079024"
+      ]
+    },
+    {
+      "id": "505193000000698878",
+      "name": "Alize Footrest",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618649"
+      ]
+    },
+    {
+      "id": "505193000000190080",
+      "name": "Alize Low Armchair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617815"
+      ]
+    },
+    {
+      "id": "505193000000704025",
+      "name": "Alize Low Table D48cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000181066",
+      "name": "Alize Offset Low Table D48cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000698403",
+      "name": "Alize Sunlounger",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079016"
+      ]
+    },
+    {
+      "id": "505193000000698583",
+      "name": "Alize XS Sunlounger",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079016"
+      ]
+    },
+    {
+      "id": "505193000002303121",
+      "name": "Alto Tray 23x17cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789"
+      ]
+    },
+    {
+      "id": "505193000002303601",
+      "name": "Alto Tray 36x23cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789"
+      ]
+    },
+    {
+      "id": "505193000002303413",
+      "name": "Alto Tray 53x38cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789"
+      ]
+    },
+    {
+      "id": "505193000000412978",
+      "name": "Ange Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179"
+      ]
+    },
+    {
+      "id": "505193000001377683",
+      "name": "Anton Coffee Table D70cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000001377597",
+      "name": "Anton Side Table D40cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000007015012",
+      "name": "Anya Runner Rug",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000005677412"
+      ]
+    },
+    {
+      "id": "505193000000626323",
+      "name": "Apex Extending Table 390",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000004202293",
+      "name": "Aplo Hanging Strap and Lamp Pack",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000004204507",
+      "name": "Aplo Lamp H24",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000004203469",
+      "name": "Aplo Magnetic Base and Lamp Pack",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000004202673",
+      "name": "Aplo Upright Stand and Lamp Pack",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000004203721",
+      "name": "Aplo Wall Bracket and Lamp Pack",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000005672951",
+      "name": "Ari Coffee Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000001267385",
+      "name": "Ari Ellipse Dining Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000001267259",
+      "name": "Ari Round Dining Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000000626365",
+      "name": "Arundel Extending Table 285",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000005675011",
+      "name": "Arvin Coffee Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000005724303",
+      "name": "Arvin Floor Lamp",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000005718585",
+      "name": "Arvin Pendant Lamp",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000005675181",
+      "name": "Arvin Side Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000005675369",
+      "name": "Arvin Stool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000005724115",
+      "name": "Arvin Swivel Lamp",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000005724535",
+      "name": "Arvin Table Lamps",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000005718859",
+      "name": "Arvin Wall Lamps",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000007123175",
+      "name": "Ascot Carver-Floor Stock",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000000299927",
+      "name": "Ascot Folding Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202016"
+      ]
+    },
+    {
+      "id": "505193000007179320",
+      "name": "Ascot Folding Chair-Floor stock",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000007200730",
+      "name": "Ascot Folding Teak Table-Floor Stock",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000000626533",
+      "name": "Ascot Footstool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618649"
+      ]
+    },
+    {
+      "id": "505193000000626453",
+      "name": "Ascot Highback Recliner",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202016"
+      ]
+    },
+    {
+      "id": "505193000000306095",
+      "name": "Ascot Table 110",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000004487042",
+      "name": "Atlas Dining Table Ellipse",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000004487222",
+      "name": "Atlas Dining Table Round",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000001424853",
+      "name": "Avignon Side Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000951039",
+      "name": "Avril Bar Stool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079026"
+      ]
+    },
+    {
+      "id": "505193000000946727",
+      "name": "Avril Counter Stool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079026"
+      ]
+    },
+    {
+      "id": "505193000002764843",
+      "name": "Avril Dining Chair Black Wood Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000001429003",
+      "name": "Avril Dining Chair Oak Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000000299807",
+      "name": "Avril Dining Chair Steel A Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000002765703",
+      "name": "Avril HB Dining Chair Black Wood Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000000892141",
+      "name": "Avril HB Dining Chair Oak Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000002765325",
+      "name": "Avril HB Dining Chair Steel A Base",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000007179213",
+      "name": "Balad Lamp H12 3 Pack - DISCONTINUED 2026-Cactus",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000007179192",
+      "name": "Balad Lamp H12 3 Pack - DISCONTINUED 2026-Nutmeg",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000007179041",
+      "name": "Balad Lamp H25-Anthracite",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000007179121",
+      "name": "Balad Lamp H25-Nutmeg",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000000350102",
+      "name": "Balad Offset Stand",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000000350340",
+      "name": "Balad Spike Stand",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000000350227",
+      "name": "Balad Upright Stand",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000003998444",
+      "name": "Balad V2 Lamp H25",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000005696788",
+      "name": "Balad V2 Lamp H38",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000006465002",
+      "name": "Basics Bistro Seat Cushion",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001197141"
+      ]
+    },
+    {
+      "id": "505193000002317032",
+      "name": "Basics Cushion D39",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001197141"
+      ]
+    },
+    {
+      "id": "505193000002317922",
+      "name": "Basics Cushion D43",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001197141"
+      ]
+    },
+    {
+      "id": "505193000000418582",
+      "name": "Basket High Planter",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079020"
+      ]
+    },
+    {
+      "id": "505193000000418281",
+      "name": "Basket Long Planter",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079020"
+      ]
+    },
+    {
+      "id": "505193000001155839",
+      "name": "Basket Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000000564120",
+      "name": "Beam Iron Pillar 100cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000589277"
+      ]
+    },
+    {
+      "id": "505193000000564091",
+      "name": "Beam Iron Pillar 80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000589277"
+      ]
+    },
+    {
+      "id": "505193000000400122",
+      "name": "Bebop Low Console Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000203454",
+      "name": "Bebop Low Table D45cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000400979",
+      "name": "Bebop Low Table D60cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000400696",
+      "name": "Bebop Low Table D80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000004166008",
+      "name": "Bebop Offset Table",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000000401262",
+      "name": "Bebop Side Table D35cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521"
+      ]
+    },
+    {
+      "id": "505193000003657501",
+      "name": "Bella Stool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000003445083",
+      "name": "Belladonna Sofa",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079024"
+      ]
+    },
+    {
+      "id": "505193000004256392",
+      "name": "Bellevie 1 Seater Centre Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004246337",
+      "name": "Bellevie 1 Seater Corner Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004261232",
+      "name": "Bellevie 1 Seater Left Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004235398",
+      "name": "Bellevie 1 Seater Ottoman",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004263672",
+      "name": "Bellevie 1 Seater Right Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004258816",
+      "name": "Bellevie 2 Seater Centre Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004251588",
+      "name": "Bellevie 2 Seater Club Sofa",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618829"
+      ]
+    },
+    {
+      "id": "505193000004273757",
+      "name": "Bellevie 2 Seater Left Corner Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004266106",
+      "name": "Bellevie 2 Seater Left Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004238754",
+      "name": "Bellevie 2 Seater Ottoman",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004276171",
+      "name": "Bellevie 2 Seater Right Corner Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004269506",
+      "name": "Bellevie 2 Seater Right Module",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004234004",
+      "name": "Bellevie 2 Seater Sofa",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618829"
+      ]
+    },
+    {
+      "id": "505193000004254014",
+      "name": "Bellevie 3 Seater Club Sofa",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618829"
+      ]
+    },
+    {
+      "id": "505193000004249178",
+      "name": "Bellevie 3 Seater Sofa",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618829"
+      ]
+    },
+    {
+      "id": "505193000004243916",
+      "name": "Bellevie Armchair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617815"
+      ]
+    },
+    {
+      "id": "505193000004230412",
+      "name": "Bellevie Bar Stool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079026"
+      ]
+    },
+    {
+      "id": "505193000002326498",
+      "name": "Bellevie Bench",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079004"
+      ]
+    },
+    {
+      "id": "505193000004224522",
+      "name": "Bellevie Bench with Backrest",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079004"
+      ]
+    },
+    {
+      "id": "505193000002564378",
+      "name": "Bellevie Dining Armchair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": []
+    },
+    {
+      "id": "505193000002327008",
+      "name": "Bellevie Dining Chair V2",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002"
+      ]
+    },
+    {
+      "id": "505193000004231590",
+      "name": "Bellevie High Table 140x80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079028"
+      ]
+    },
+    {
+      "id": "505193000004213913",
+      "name": "Bellevie High Table 74x80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079028"
+      ]
+    },
+    {
+      "id": "505193000004292640",
+      "name": "Bellevie Large Low Table 138x80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000004279120",
+      "name": "Bellevie Lounge Set 1A",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004281316",
+      "name": "Bellevie Lounge Set 1B",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004284428",
+      "name": "Bellevie Lounge Set 2",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004285902",
+      "name": "Bellevie Lounge Set 3A",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004288322",
+      "name": "Bellevie Lounge Set 3B",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022"
+      ]
+    },
+    {
+      "id": "505193000004291973",
+      "name": "Bellevie Low Table 103x75cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000004294334",
+      "name": "Bellevie Mid Height Table 140x80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079008"
+      ]
+    },
+    {
+      "id": "505193000004295499",
+      "name": "Bellevie Premium Sunlounger",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079016"
+      ]
+    },
+    {
+      "id": "505193000004225945",
+      "name": "Bellevie Table 140x80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000002324848",
+      "name": "Bellevie Table 196x90cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000004228607",
+      "name": "Bellevie Table 196x90cm with Storage",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000004225235",
+      "name": "Bellevie Table 74x80cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010"
+      ]
+    },
+    {
+      "id": "505193000000626571",
+      "name": "Bermuda Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179"
+      ]
+    },
+    {
+      "id": "505193000000626603",
+      "name": "Bermuda High Dining Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617993"
+      ]
+    },
+    {
+      "id": "505193000000626683",
+      "name": "Bermuda Pedestal High Dining Table D90",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617993"
+      ]
+    },
+    {
+      "id": "505193000000626645",
+      "name": "Bermuda Pedestal Table D90",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000000418903",
+      "name": "Biarritz Table with extension 200/300x100cm",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231"
+      ]
+    },
+    {
+      "id": "505193000005724949",
+      "name": "Bill Floor Lamps",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    },
+    {
+      "id": "505193000000327629",
+      "name": "Bistro 2 Seater Bench",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079004"
+      ]
+    },
+    {
+      "id": "505193000000371711",
+      "name": "Bistro Balcony Table 57x77",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000372305",
+      "name": "Bistro Foldable Bar Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617993"
+      ]
+    },
+    {
+      "id": "505193000007200386",
+      "name": "Bistro Foldable Bar Chair Honey-Floor Stock",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000007200451",
+      "name": "Bistro Foldable Bar Chair Rosemary-Floor Stock",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000000372028",
+      "name": "Bistro High Table 71x71",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617993"
+      ]
+    },
+    {
+      "id": "505193000007179374",
+      "name": "Bistro High Table 71x71cm Honey-Floor Stock",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864"
+      ]
+    },
+    {
+      "id": "505193000000327049",
+      "name": "Bistro Metal Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202016"
+      ]
+    },
+    {
+      "id": "505193000000375956",
+      "name": "Bistro Natural Chair",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202016"
+      ]
+    },
+    {
+      "id": "505193000000589174",
+      "name": "Bistro Outdoor Cushion Colour Mix",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001197141"
+      ]
+    },
+    {
+      "id": "505193000000369272",
+      "name": "Bistro Table 117x77",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000369836",
+      "name": "Bistro Table 37x57",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000371396",
+      "name": "Bistro Table 57x57",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000371117",
+      "name": "Bistro Table 71x71",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000369559",
+      "name": "Bistro Table 77x57",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000314490",
+      "name": "Bistro Table 97x57",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000367381",
+      "name": "Bistro Table D117",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000327344",
+      "name": "Bistro Table D60",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000367985",
+      "name": "Bistro Table D77",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000000367676",
+      "name": "Bistro Table D96",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202018"
+      ]
+    },
+    {
+      "id": "505193000003657353",
+      "name": "Blues Counter Stool",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079026"
+      ]
+    },
+    {
+      "id": "505193000005724799",
+      "name": "Bob Floor Lamp",
+      "sku": "",
+      "image": "",
+      "url": "https://www.strandroadireland.com",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079018"
+      ]
+    }
+  ]
 }
