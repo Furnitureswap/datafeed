@@ -94,7 +94,8 @@ def admin_headers(access_token):
 
 def fetch_all_categories(access_token):
     items, page = [], 1
-    while True:
+    max_pages = 100  # safety cap so a pagination quirk can't loop forever
+    while page <= max_pages:
         resp = requests.get(
             f"{ADMIN_API_BASE}/categories",
             headers=admin_headers(access_token),
@@ -103,34 +104,53 @@ def fetch_all_categories(access_token):
         )
         resp.raise_for_status()
         payload = resp.json()
-        items.extend(payload.get("categories", []))
-        if not payload.get("page_context", {}).get("has_more_page"):
+        batch = payload.get("categories", [])
+        items.extend(batch)
+        print(f"  fetched category page {page} ({len(batch)} items, {len(items)} total so far)")
+        if not payload.get("page_context", {}).get("has_more_page") or not batch:
             break
         page += 1
         time.sleep(0.2)
+    else:
+        print(f"WARNING: stopped after the {max_pages}-page safety cap for categories")
     return items
 
 
 def fetch_all_products(access_token):
-    items, page = [], 1
-    while True:
+    """
+    IMPORTANT: `page_start_from` is a RECORD OFFSET ("start listing from
+    record number X"), not a page number -- it must jump by `per_page` each
+    call (1, 201, 401, ...). Incrementing it by 1 each time (an earlier bug
+    here) causes near-duplicate overlapping requests and can loop for
+    hundreds of "pages" instead of ~6, eventually failing only when the
+    1-hour OAuth access token expires (HTTP 401) rather than finishing.
+    """
+    per_page = 200
+    items, offset, page_num = [], 1, 1
+    max_pages = 100  # safety cap: 100 x 200 = 20,000 products, far more than any real catalog here
+    while page_num <= max_pages:
         resp = requests.get(
             f"{ADMIN_API_BASE}/products",
             headers=admin_headers(access_token),
             params={
                 "filter_by": "Status.Active",
-                "page_start_from": page,
-                "per_page": 200,
+                "page_start_from": offset,
+                "per_page": per_page,
             },
             timeout=30,
         )
         resp.raise_for_status()
         payload = resp.json()
-        items.extend(payload.get("products", []))
-        if not payload.get("page_context", {}).get("has_more_page"):
+        batch = payload.get("products", [])
+        items.extend(batch)
+        print(f"  fetched product page {page_num} ({len(batch)} items, {len(items)} total so far)")
+        if not payload.get("page_context", {}).get("has_more_page") or not batch:
             break
-        page += 1
+        offset += per_page
+        page_num += 1
         time.sleep(0.2)
+    else:
+        print(f"WARNING: stopped after the {max_pages}-page safety cap -- catalog may be larger than expected")
 
     return _filter_online_only(items)
 
@@ -199,15 +219,61 @@ def storefront_headers():
     return {"domain-name": STOREFRONT_DOMAIN}
 
 
+_failure_count = 0
+_failure_examples_printed = 0
+
+
+def _log_failure(kind, item_id, reason):
+    global _failure_count, _failure_examples_printed
+    _failure_count += 1
+    if _failure_examples_printed < 5:
+        print(f"  [storefront {kind} FAILED] id={item_id} domain-name={STOREFRONT_DOMAIN!r} -> {reason}")
+        _failure_examples_printed += 1
+
+
+def verify_storefront_access(sample_category_id=None, sample_product_id=None):
+    """
+    One quick sanity check before doing 1000+ requests. If this fails, every
+    subsequent enrichment call would fail too (usually a wrong STOREFRONT_DOMAIN)
+    -- better to stop immediately with a clear message than burn ~20-30 minutes
+    silently timing out on every single product/category.
+    """
+    test_id = sample_category_id or sample_product_id
+    kind = "categories" if sample_category_id else "products"
+    try:
+        resp = requests.get(
+            f"{STOREFRONT_API_BASE}/{kind}/{test_id}",
+            headers=storefront_headers(),
+            timeout=10,
+        )
+    except requests.RequestException as e:
+        raise SystemExit(
+            f"Storefront API is unreachable using domain-name={STOREFRONT_DOMAIN!r}: {e}\n"
+            f"Set the STOREFRONT_DOMAIN secret to your store's actual published domain "
+            f"(check Settings -> Online Store -> Domain and SSL in Zoho Commerce)."
+        )
+    if not resp.ok:
+        raise SystemExit(
+            f"Storefront API test call failed (HTTP {resp.status_code}) using "
+            f"domain-name={STOREFRONT_DOMAIN!r}. Response: {resp.text[:300]}\n"
+            f"This almost always means STOREFRONT_DOMAIN doesn't match what Zoho has "
+            f"registered as your store's live domain -- check Settings -> Online Store -> "
+            f"Domain and SSL in Zoho Commerce and set the STOREFRONT_DOMAIN secret to match "
+            f"exactly (no https://, no trailing slash)."
+        )
+    print(f"Storefront access check passed (domain-name={STOREFRONT_DOMAIN!r})")
+
+
 def enrich_product(product_id):
     """Fetch real image URL + page URL for one product from the public storefront API."""
     try:
         resp = requests.get(
             f"{STOREFRONT_API_BASE}/products/{product_id}",
             headers=storefront_headers(),
-            timeout=20,
+            timeout=10,
         )
         if not resp.ok:
+            _log_failure("product", product_id, f"HTTP {resp.status_code}")
             return product_id, {"image": "", "url": ""}
         data = resp.json().get("product", {}) or {}
         images = data.get("images", []) or []
@@ -218,7 +284,8 @@ def enrich_product(product_id):
         page_url = data.get("url", "")
         full_url = page_url if page_url.startswith("http") else f"https://{STOREFRONT_DOMAIN}{page_url}"
         return product_id, {"image": image_url, "url": full_url}
-    except requests.RequestException:
+    except requests.RequestException as e:
+        _log_failure("product", product_id, str(e))
         return product_id, {"image": "", "url": ""}
 
 
@@ -228,9 +295,10 @@ def enrich_category(category_id):
         resp = requests.get(
             f"{STOREFRONT_API_BASE}/categories/{category_id}",
             headers=storefront_headers(),
-            timeout=20,
+            timeout=10,
         )
         if not resp.ok:
+            _log_failure("category", category_id, f"HTTP {resp.status_code}")
             return category_id, {"image": "", "url": ""}
         data = resp.json().get("category", {}) or {}
         images = data.get("images", []) or []
@@ -241,7 +309,8 @@ def enrich_category(category_id):
         page_url = data.get("url", "")
         full_url = page_url if page_url.startswith("http") else f"https://{STOREFRONT_DOMAIN}{page_url}"
         return category_id, {"image": image_url, "url": full_url}
-    except requests.RequestException:
+    except requests.RequestException as e:
+        _log_failure("category", category_id, str(e))
         return category_id, {"image": "", "url": ""}
 
 
@@ -384,13 +453,25 @@ def main():
         raise SystemExit(f"Missing required secrets/env vars: {', '.join(missing)}")
 
     access_token = get_access_token()
+    print("Got Zoho access token")
 
     categories = fetch_all_categories(access_token)
     products = fetch_all_products(access_token)
+    print(f"Fetched {len(categories)} categories, {len(products)} online products.")
 
-    print(f"Fetched {len(categories)} categories, {len(products)} online products. Enriching...")
+    # Fail fast and loudly if STOREFRONT_DOMAIN is wrong, instead of silently
+    # timing out on every single one of 1000+ items (which is what happened
+    # before this check existed -- looked "stuck" for ~35 minutes).
+    if categories:
+        verify_storefront_access(sample_category_id=categories[0]["category_id"])
+    elif products:
+        verify_storefront_access(sample_product_id=products[0]["product_id"])
+
+    print("Enriching with real image/page URLs (this is the slow part)...")
     category_enrichment = enrich_all([c["category_id"] for c in categories], enrich_category, label="categories")
     product_enrichment = enrich_all([p["product_id"] for p in products], enrich_product, label="products")
+    if _failure_count:
+        print(f"NOTE: {_failure_count} storefront enrichment calls failed (image/url left blank for those items)")
 
     if INCLUDE_DIMENSIONS:
         for p in products:
