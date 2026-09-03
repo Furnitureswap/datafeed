@@ -365,18 +365,43 @@ def _resolve_url_and_image(data, fallback_domain):
     return full_url, image_url
 
 
+def _extract_payload(raw, wrapper_key, sample_flag_name, id_for_log):
+    """
+    Print the TRUE raw response the first time (unmodified -- earlier
+    versions of this dump printed the result of a wrong key guess instead
+    of the real payload, which is why it showed up empty), then try several
+    plausible wrapper keys before falling back to treating the top-level
+    object itself as the data (some Zoho storefront responses aren't
+    wrapped in a "product"/"category" key at all).
+    """
+    global _dumped_product_sample, _dumped_category_sample
+    already_dumped = _dumped_product_sample if sample_flag_name == "product" else _dumped_category_sample
+    if not already_dumped:
+        if sample_flag_name == "product":
+            globals()["_dumped_product_sample"] = True
+        else:
+            globals()["_dumped_category_sample"] = True
+        print(f"  SAMPLE raw {sample_flag_name} response (id={id_for_log}): {json.dumps(raw)[:3000]}")
+
+    for key in (wrapper_key, "data", "result"):
+        if isinstance(raw.get(key), dict) and raw.get(key):
+            return raw[key]
+    # Not wrapped -- the top-level object itself looks like the item if it
+    # has an identifying field.
+    if any(k in raw for k in ("name", "category_id", "product_id", "url", "handle")):
+        return raw
+    return {}
+
+
 def enrich_product(product_id):
     """Fetch real image URL + page URL for one product from the public storefront API."""
-    global _dumped_product_sample
     try:
         resp = _get_with_retry(f"{STOREFRONT_API_BASE}/products/{product_id}")
         if not resp.ok:
             _log_failure("product", product_id, f"HTTP {resp.status_code}")
             return product_id, {"image": "", "url": ""}
-        data = resp.json().get("product", {}) or {}
-        if not _dumped_product_sample:
-            _dumped_product_sample = True
-            print(f"  SAMPLE raw product JSON (id={product_id}): {json.dumps(data)[:2000]}")
+        raw = resp.json()
+        data = _extract_payload(raw, "product", "product", product_id)
         full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
         return product_id, {"image": image_url, "url": full_url}
     except requests.RequestException as e:
@@ -386,16 +411,13 @@ def enrich_product(product_id):
 
 def enrich_category(category_id):
     """Fetch real image URL + page URL for one category from the public storefront API."""
-    global _dumped_category_sample
     try:
         resp = _get_with_retry(f"{STOREFRONT_API_BASE}/categories/{category_id}")
         if not resp.ok:
             _log_failure("category", category_id, f"HTTP {resp.status_code}")
             return category_id, {"image": "", "url": ""}
-        data = resp.json().get("category", {}) or {}
-        if not _dumped_category_sample:
-            _dumped_category_sample = True
-            print(f"  SAMPLE raw category JSON (id={category_id}): {json.dumps(data)[:2000]}")
+        raw = resp.json()
+        data = _extract_payload(raw, "category", "category", category_id)
         full_url, image_url = _resolve_url_and_image(data, STOREFRONT_DOMAIN)
         return category_id, {"image": image_url, "url": full_url}
     except requests.RequestException as e:
