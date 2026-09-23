@@ -448,6 +448,20 @@
       ]
     },
     {
+      "id": "505193000007725238",
+      "name": "Ange Bench",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Ange%20Bench%20Maya%20Blue.png/505193000007725456/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/ange-bench/505193000007725238",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079004",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
       "id": "505193000000412978",
       "name": "Ange Chair",
       "sku": "",
@@ -3630,6 +3644,48 @@
       "category_ids": [
         "505193000001617179",
         "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007725063",
+      "name": "Elia Coasters (Set of 4)",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Elia%20Coasters%20Maya%20Blue.png/505193000007725119/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/elia-coasters-set-of-4/505193000007725063",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789",
+        "505193000000589277",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007725004",
+      "name": "Elia Tray D34cm",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Elia%20Tray%20Candied%20Orange.png/505193000007725046/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/elia-tray-d34cm/505193000007725004",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789",
+        "505193000000589277",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007725162",
+      "name": "Elia Trivet",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Elia%20Trivet%20Candied%20Orange.png/505193000007725218/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/elia-trivet/505193000007725162",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618789",
+        "505193000000589277",
         "505193000000202002"
       ]
     },
