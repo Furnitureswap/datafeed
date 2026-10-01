@@ -611,6 +611,34 @@
       ]
     },
     {
+      "id": "505193000007814576",
+      "name": "Archie Beech Chair",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/ARCHIE_CHAISE_HETRE_VERT_TILLEUL_SKU_162065.png/505193000007814847/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/archie-beech-chair/505193000007814576",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007818318",
+      "name": "Archie Stained Wood Chair",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/ARCHIE_CHAISE_METAL_BLEU_MAYA_SKU_1610E1.png/505193000007818557/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/archie-stained-wood-chair/505193000007818318",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079002",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
       "id": "505193000005672951",
       "name": "Ari Coffee Table",
       "sku": "",
@@ -3728,19 +3756,6 @@
       "category_ids": [
         "505193000001617179",
         "505193000000165002",
-        "505193000000202002"
-      ]
-    },
-    {
-      "id": "505193000007208397",
-      "name": "Emma Exterior Chair-Floor Stock",
-      "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/WhatsApp%20Image%202026-07-08%20at%2010.42.40%20%287%29.jpeg/505193000007208431/700x700?storefront_domain=www.strandroadireland.com",
-      "url": "https://www.strandroadireland.com/products/emma-exterior-chair-floor-stock/505193000007208397",
-      "add_to_cart_url": "",
-      "dimensions": "",
-      "category_ids": [
-        "505193000003991864",
         "505193000000202002"
       ]
     },
@@ -11864,19 +11879,6 @@
       "category_ids": [
         "505193000001618789",
         "505193000000589277",
-        "505193000000202002"
-      ]
-    },
-    {
-      "id": "505193000003984224",
-      "name": "Trefle Trivet Honey",
-      "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/TREFLE_Stephane%20RAMBAUD%20pour%20Fermob%20%285%29.png/505193000003984330/700x700?storefront_domain=www.strandroadireland.com",
-      "url": "https://www.strandroadireland.com/products/trefle-trivet-honey/505193000003984224",
-      "add_to_cart_url": "",
-      "dimensions": "",
-      "category_ids": [
-        "505193000003991864",
         "505193000000202002"
       ]
     },
