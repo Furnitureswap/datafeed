@@ -11110,6 +11110,34 @@
       ]
     },
     {
+      "id": "505193000007821005",
+      "name": "Studie Oak Bar Chair H65",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/STUDIE_CHAISE_DE_BAR_CHENE_H65_PIMENT_SKU_692543.jpg/505193000007821215/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/studie-oak-bar-chair-h65/505193000007821005",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079026",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007821293",
+      "name": "Studie Oak Bar Chair H75",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/STUDIE_CHAISE_DE_BAR_CHENE_H75_CACTUS_SKU_692482.png/505193000007821518/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/studie-oak-bar-chair-h75/505193000007821293",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079026",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
       "id": "505193000000345114",
       "name": "Studie Oak Chair",
       "sku": "",
@@ -12238,6 +12266,62 @@
       "category_ids": [
         "505193000001617231",
         "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007821739",
+      "name": "Voulez-Vous 3 Seat Sofa Boucle Fabric",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/VOULEZ-VOUS_CANAPE_3_PLACES_PAIN_DEPICES_BOUCLETTE_CORDE_AVEC_COUSSINS_SKU_9812D29R.png/505193000007821921/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/voulez-vous-3-seat-sofa-boucle-fabric/505193000007821739",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079024",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007830128",
+      "name": "Voulez-Vous 3 Seat Sofa Heathered Fabric",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/VOULEZ_VOUS_CANAPE_3_PLACES_CERISE_NOIRE_CHINE_PAON_AVEC_COUSSIN_SKU_9811B96N.png/505193000007831364/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/voulez-vous-3-seat-sofa-heathered-fabric/505193000007830128",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079024",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007821940",
+      "name": "Voulez-Vous 3 Seat Sofa Speckled Fabric",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/VOULEZ_VOUS_CANAPE_3_PLACES_ORANGE_CONFITE_MOUCHETE_ORANGE_AVEC_COUSSIN_SKU_9810E21B.png/505193000007830122/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/voulez-vous-3-seat-sofa-speckled-fabric/505193000007821940",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079024",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007831376",
+      "name": "Voulez-Vous Large Pouf Speckled Fabric",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/VOULEZ-VOUS_GRAND_POUF_OCRE_ROUGE_MOUCHETE_ORANGE_SKU_9820201C.png/505193000007831489/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/voulez-vous-large-pouf-speckled-fabric/505193000007831376",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079014",
+        "505193000001611109",
         "505193000000202002"
       ]
     },
