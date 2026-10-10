@@ -4337,19 +4337,6 @@
       ]
     },
     {
-      "id": "505193000000631545",
-      "name": "Glenham Junior Armchair",
-      "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/1GLJA.jpg/505193000000631565/700x700?storefront_domain=www.strandroadireland.com",
-      "url": "https://www.strandroadireland.com/products/glenham-junior-armchair/505193000000631545",
-      "add_to_cart_url": "",
-      "dimensions": "",
-      "category_ids": [
-        "505193000000202026",
-        "505193000000202002"
-      ]
-    },
-    {
       "id": "505193000004380112",
       "name": "Goosto Kitchen The Generous",
       "sku": "",
@@ -4470,6 +4457,20 @@
       "dimensions": "",
       "category_ids": [
         "505193000000079012",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000007899050",
+      "name": "Harmony Club Chair",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Screenshot%202026-10-10%20at%2012-01-42%20Harmony%20Club%20Chair%20Barlow%20Tyrie.png/505193000007899092/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/harmony-club-chair/505193000007899050",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617815",
         "505193000000165002",
         "505193000000202002"
       ]
