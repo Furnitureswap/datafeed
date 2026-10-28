@@ -144,7 +144,7 @@
       "id": "505193000000203071",
       "name": "Adada Rocking Horse",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/ADADA_CHEVAL_A_BASCULE_GUIMAUVE_SKU_3280D1.png/505193000004447488/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/ADADA_CHEVAL_A_BASCULE_ROSALIE_SKU_3280G6.png/505193000008022071/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/adada-rocking-horse/505193000000203071",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -625,10 +625,38 @@
       ]
     },
     {
+      "id": "505193000008022209",
+      "name": "Archie Chair",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/ARCHIE_CHAISE_METAL_ROSALIE_SKU_1610G6.png/505193000008022442/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/archie-chair/505193000008022209",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008022469",
+      "name": "Archie Removable Armrests (2 Pack)",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/ARCHIE_ACCOUDOIRS_BEIGE_LATTE_SKU_1690E8.png/505193000008022678/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/archie-removable-armrests-2-pack/505193000008022469",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000202020",
+        "505193000000165006",
+        "505193000000202002"
+      ]
+    },
+    {
       "id": "505193000007818318",
       "name": "Archie Stained Wood Chair",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/ARCHIE_CHAISE_METAL_BLEU_MAYA_SKU_1610E1.png/505193000007818557/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/ARCHIE_CHAISE_HETRE_BOIS_TEINTE_ROMARIN_SKU_163048.jpg/505193000008022773/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/archie-stained-wood-chair/505193000007818318",
       "add_to_cart_url": "",
       "dimensions": "",
