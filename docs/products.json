@@ -1613,7 +1613,25 @@
       "url": "https://www.strandroadireland.com/products/bellevie-dining-armchair/505193000002564378",
       "add_to_cart_url": "",
       "dimensions": "",
-      "category_ids": []
+      "category_ids": [
+        "505193000001617179",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008078887",
+      "name": "Bellevie Dining Armchair (Pearl Fabric)",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BELLEVIE_FAUTEUIL_REPAS_VERT_TILLEUL_PERLE_SKU_840565D4.png/505193000008086124/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/bellevie-dining-armchair-pearl-fabric/505193000008078887",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617179",
+        "505193000000165002",
+        "505193000000202002"
+      ]
     },
     {
       "id": "505193000002327008",
@@ -3893,6 +3911,32 @@
       "category_ids": [
         "505193000000079004",
         "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008090245",
+      "name": "Fermob Protective Cover for Table 160x100",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Protective%20cover%20for%20table%20%E2%80%93%20Fermob%20%E2%80%93%20160%20x%20100%20cm%20Fermob%20%282%29.png/505193000008090392/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/fermob-protective-cover-for-table-160x100/505193000008090245",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000006376462",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008090287",
+      "name": "Fermob Protective Cover for Table 210x100",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/Protective%20cover%20for%20table%20%E2%80%93%20Fermob%20210%20x%20100%20cm%20Dimensions.png/505193000008090342/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/fermob-protective-cover-for-table-210x100/505193000008090287",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000006376462",
         "505193000000202002"
       ]
     },
