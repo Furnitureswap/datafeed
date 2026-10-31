@@ -1944,7 +1944,7 @@
       "id": "505193000000327629",
       "name": "Bistro 2 Seater Bench",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_BANQUETTE_2_PLACES_GUIMAUVE_SKU_0104D1.png/505193000000327569/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_BANQUETTE_2_PLACES_ROSALIE_SKU_0104G6.png/505193000008091724/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-2-seater-bench/505193000000327629",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2050,6 +2050,19 @@
       ]
     },
     {
+      "id": "505193000008091468",
+      "name": "Bistro Metal Chair-Marshmallow-End of Line",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_CHAISE_METAL_GUIMAUVE_SKU_0101D1.png/505193000008091494/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/bistro-metal-chair-marshmallow-end-of-line/505193000008091468",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864",
+        "505193000000202002"
+      ]
+    },
+    {
       "id": "505193000000375956",
       "name": "Bistro Natural Chair",
       "sku": "",
@@ -2081,7 +2094,7 @@
       "id": "505193000000369272",
       "name": "Bistro Table 117x77",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_117X77_PAIN_EPICES_SKU_0240D2.png/505193000001723037/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_117x77_PIMENT.png/505193000008093994/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-117x77/505193000000369272",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2095,7 +2108,7 @@
       "id": "505193000000369836",
       "name": "Bistro Table 37x57",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_57X37_PAIN_EPICES_SKU_6034D2.png/505193000001723079/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_37x57_CACTUS.png/505193000008093517/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-37x57/505193000000369836",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2109,7 +2122,7 @@
       "id": "505193000000371396",
       "name": "Bistro Table 57x57",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_57X57_PAIN_EPICES_SKU_6042D2.png/505193000001723107/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_57X57_ORANGE_CONFITE_SKU_6042E2.png/505193000008093326/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-57x57/505193000000371396",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2137,7 +2150,7 @@
       "id": "505193000000369559",
       "name": "Bistro Table 77x57",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_77X57_PAIN_EPICES_SKU_0243D2.png/505193000001723065/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_77x57_OCRE_ROUGE.png/505193000008093673/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-77x57/505193000000369559",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2151,7 +2164,7 @@
       "id": "505193000000314490",
       "name": "Bistro Table 97x57",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_97X57_PAIN_EPICES_SKU_0239D2.png/505193000001723051/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_97x57_CACTUS.png/505193000008093843/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-97x57/505193000000314490",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2165,7 +2178,7 @@
       "id": "505193000000367381",
       "name": "Bistro Table D117",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D117_PAIN_EPICES_SKU_0237D2.png/505193000001722983/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D117_PESTO_SKU_0237D3.png/505193000008094659/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-d117/505193000000367381",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2179,7 +2192,7 @@
       "id": "505193000000327344",
       "name": "Bistro Table D60",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D60_PAIN_EPICES_SKU_0245D2.png/505193000001723023/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D60_TILLEUL.png/505193000008094181/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-d60/505193000000327344",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2193,7 +2206,7 @@
       "id": "505193000000367985",
       "name": "Bistro Table D77",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D77_PAIN_EPICES_SKU_0233D2.png/505193000001723009/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D77_ORANGE_CONFITE_SKU_0233E2.png/505193000008094332/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-d77/505193000000367985",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2207,7 +2220,7 @@
       "id": "505193000000367676",
       "name": "Bistro Table D96",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D96_PAIN_EPICES_SKU_0235D2.png/505193000001722995/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/BISTRO_TABLE_D96_MIEL.png/505193000008094508/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/bistro-table-d96/505193000000367676",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2342,7 +2355,7 @@
       "id": "505193000000336740",
       "name": "Cadiz Armchair",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/CADIZ_BRIDGE_GRIS_ORAGE_STEREO.png/505193000000332085/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CADIZ_BRIDGE_CACTUS.png/505193000008095128/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/cadiz-armchair/505193000000336740",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -2370,13 +2383,26 @@
       "id": "505193000000336621",
       "name": "Cadiz Chair",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/CADIZ_CHAISE_GRIS_ORAGE_STEREO.png/505193000000332055/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CADIZ_CHAISE_CACTUS.png/505193000008095062/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/cadiz-chair/505193000000336621",
       "add_to_cart_url": "",
       "dimensions": "",
       "category_ids": [
         "505193000001617179",
         "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008095189",
+      "name": "Cadiz Chair-Storm Grey-End of Line",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CADIZ_CHAISE_GRIS_ORAGE_STEREO.png/505193000008095227/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/cadiz-chair-storm-grey-end-of-line/505193000008095189",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000003991864",
         "505193000000202002"
       ]
     },
@@ -2404,6 +2430,62 @@
       "dimensions": "",
       "category_ids": [
         "505193000001617815",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008097756",
+      "name": "Calvi Low Table 100x60",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CALVI_TABLE_BASSE_100X60_ROSALIE_SKU_8777G6.png/505193000008097987/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/calvi-low-table-100x60/505193000008097756",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008097228",
+      "name": "Calvi Mineral Aeris Table 160x80",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CALVI_TABLE_160x80_CERISE_NOIRE_AERIS_SKU_8793E9B9.png/505193000008097465/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/calvi-mineral-aeris-table-160x80/505193000008097228",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000004345265",
+      "name": "Calvi Mineral Kreta Table 160x80",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CALVI_TABLE_160x80_BLEU_ABYSSE_KRETA_SKU_8793F192.png/505193000008095969/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/calvi-mineral-kreta-table-160x80/505193000004345265",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000004345787",
+      "name": "Calvi Mineral Kreta Table 195x95",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/CALVI_TABLE_195x95_BLEU_ABYSSE_KRETA_SKU_8790F192.png/505193000004348187/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/calvi-mineral-kreta-table-195x95/505193000004345787",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001617231",
         "505193000000165002",
         "505193000000202002"
       ]
