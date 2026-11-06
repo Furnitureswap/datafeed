@@ -317,6 +317,13 @@
           "url": "https://www.strandroadireland.com/categories/maintenance/505193000006376462",
           "image": "",
           "parent_id": "505193000000202002"
+        },
+        {
+          "id": "505193000008146907",
+          "name": "Gift Certificates",
+          "url": "https://www.strandroadireland.com/categories/gift-certificates/505193000008146907",
+          "image": "",
+          "parent_id": "505193000000202002"
         }
       ]
     }
