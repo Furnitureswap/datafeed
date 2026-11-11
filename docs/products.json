@@ -10182,10 +10182,10 @@
     },
     {
       "id": "505193000006355432",
-      "name": "Rivage Low Chair",
+      "name": "Rivage Low Armchair",
       "sku": "",
       "image": "https://cdn3.zohoecommerce.com/product-images/RIVAGE_FAUTEUIL_BAS_BASALTE_TOILE_TEINT_MASSE_PERLE_SKU_V5162503-M0604.png/505193000006357205/700x700?storefront_domain=www.strandroadireland.com",
-      "url": "https://www.strandroadireland.com/products/rivage-low-chair/505193000006355432",
+      "url": "https://www.strandroadireland.com/products/rivage-low-armchair/505193000006355432",
       "add_to_cart_url": "",
       "dimensions": "",
       "category_ids": [
@@ -10200,6 +10200,20 @@
       "sku": "",
       "image": "https://cdn3.zohoecommerce.com/product-images/RIVAGE_TABLE_BASSE_85X85_SEQUOIA_SKU_V5162005.png/505193000005755023/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/rivage-low-table-85-x-85/505193000004694003",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079022",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008198511",
+      "name": "Rivage Mid-Height Table 85 x 85",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/RIVAGE_TABLE_MI_HAUTEUR_85X85_SEQUOIA_SKU_V5162035.png/505193000008198602/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/rivage-mid-height-table-85-x-85/505193000008198511",
       "add_to_cart_url": "",
       "dimensions": "",
       "category_ids": [
