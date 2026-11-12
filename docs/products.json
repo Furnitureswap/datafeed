@@ -10217,7 +10217,7 @@
       "add_to_cart_url": "",
       "dimensions": "",
       "category_ids": [
-        "505193000000079022",
+        "505193000001618521",
         "505193000000165002",
         "505193000000202002"
       ]
@@ -10260,6 +10260,20 @@
       "dimensions": "",
       "category_ids": [
         "505193000000079022",
+        "505193000000165002",
+        "505193000000202002"
+      ]
+    },
+    {
+      "id": "505193000008198643",
+      "name": "Rivage Pivoting Shelf",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/RIVAGE_TABLETTE_PIVOTANTE_BASALTE_SKU_V5162903.png/505193000008198734/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/rivage-pivoting-shelf/505193000008198643",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000001618521",
         "505193000000165002",
         "505193000000202002"
       ]
@@ -10798,7 +10812,7 @@
       "id": "505193000000756881",
       "name": "Salsa Pedestal Table",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/SALSA_GUERIDON_GUIMAUVE_SKU_3270D1.png/505193000000756795/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/SALSA_GUERIDON_TILLEUL.png/505193000008202586/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/salsa-pedestal-table/505193000000756881",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -11086,10 +11100,24 @@
       ]
     },
     {
+      "id": "505193000008204349",
+      "name": "So'o Round Table Oak D117",
+      "sku": "",
+      "image": "https://cdn3.zohoecommerce.com/product-images/SOO_TABLE_D117_CHENE_VERT_CROQUANT_SKU_3283G7.jpg/505193000008204580/700x700?storefront_domain=www.strandroadireland.com",
+      "url": "https://www.strandroadireland.com/products/so-o-round-table-oak-d117/505193000008204349",
+      "add_to_cart_url": "",
+      "dimensions": "",
+      "category_ids": [
+        "505193000000079010",
+        "505193000001611109",
+        "505193000000202002"
+      ]
+    },
+    {
       "id": "505193000000690448",
       "name": "So'O Table D117",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/SO_O_TABLE_D117_PAIN_EPICES_SKU_3261D2.png/505193000004424447/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/SO_O_TABLE_D117_GRISE_ARGILE.png/505193000008204124/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/so-o-table-d117/505193000000690448",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -11200,7 +11228,7 @@
       "id": "505193000000344823",
       "name": "Studie Armchair",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/STUDIE_BRIDGE_BLEU_ACAPULCO.png/505193000001718455/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/STUDIE_BRIDGE_VERT_CROQUANT_SKU_6912G7.jpg/505193000008205317/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/studie-armchair/505193000000344823",
       "add_to_cart_url": "",
       "dimensions": "",
@@ -11214,7 +11242,7 @@
       "id": "505193000000344534",
       "name": "Studie Chair",
       "sku": "",
-      "image": "https://cdn3.zohoecommerce.com/product-images/STUDIE_CHAISE_BLEU_ACAPULCO.png/505193000001718303/700x700?storefront_domain=www.strandroadireland.com",
+      "image": "https://cdn3.zohoecommerce.com/product-images/STUDIE_CHAISE_VERT_CROQUANT_SKU_6911G7.png/505193000008205060/700x700?storefront_domain=www.strandroadireland.com",
       "url": "https://www.strandroadireland.com/products/studie-chair/505193000000344534",
       "add_to_cart_url": "",
       "dimensions": "",
